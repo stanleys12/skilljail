@@ -106,66 +106,58 @@ def parse_denial_line(line: str, ts: float | None = None) -> Denial | None:
 
 
 class DenialCollector:
-    """Streams Seatbelt denials from the unified log while a run executes (macOS only)."""
+    """Reads Seatbelt denials from the macOS unified log for a run's time window.
+
+    Uses a post-hoc ``log show --start … --end …`` query rather than a live ``log stream``:
+    the persisted log is authoritative and deterministic, whereas the stream attaches with
+    variable latency and can miss a single fast denial (e.g. a reverse shell's one blocked
+    ``connect()``). This is telemetry only — enforcement already happened in the kernel.
+    """
 
     def __init__(self, extra_noise: set[str] | None = None):
         self.available = sys.platform == "darwin" and shutil.which("log") is not None
-        self._proc: subprocess.Popen | None = None
-        self._lines: list[tuple[float, str]] = []
-        self._thread: threading.Thread | None = None
         self._start_ts = 0.0
         self.noise = set(NOISY_PROCESSES) | (extra_noise or set())
 
     def start(self) -> None:
-        if not self.available:
-            return
         self._start_ts = time.time()
-        self._proc = subprocess.Popen(
-            ["/usr/bin/log", "stream", "--style", "compact", "--predicate", 'sender == "Sandbox"'],
-            stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True, bufsize=1,
-        )
-        self._thread = threading.Thread(target=self._pump, daemon=True)
-        self._thread.start()
-        # `log stream` takes a moment to attach; give it a beat so early denials aren't missed
-        time.sleep(0.6)
 
-    def _pump(self) -> None:
-        assert self._proc and self._proc.stdout
-        for line in self._proc.stdout:
-            self._lines.append((time.time(), line.rstrip("\n")))
+    def _pump(self) -> None:  # retained for API compatibility; no-op in query mode
+        pass
 
-    def stop(self, settle: float = 1.5, window_start: float | None = None, window_end: float | None = None) -> list[Denial]:
-        """Stop streaming and return denials whose *event* time falls inside [window_start, window_end].
+    @staticmethod
+    def _fmt(ts: float) -> str:
+        return datetime.fromtimestamp(ts).strftime("%Y-%m-%d %H:%M:%S")
 
-        ``log stream`` delivers with noticeable latency, so filtering on receipt time bleeds
-        one run's denials into the next; the event timestamp on the line is authoritative.
-        """
-        if not self.available or not self._proc:
+    def stop(self, settle: float | None = None, window_start: float | None = None, window_end: float | None = None) -> list[Denial]:
+        """Return denials whose event time falls inside [window_start, window_end]."""
+        if not self.available:
             return []
-        end = window_end if window_end is not None else time.time()
-        time.sleep(settle)  # let trailing denials flush
-        try:
-            self._proc.terminate()
-            self._proc.wait(3)
-        except Exception:
-            try:
-                self._proc.kill()
-            except Exception:
-                pass
-        if self._thread:
-            self._thread.join(2)
+        if settle is None:
+            settle = float(os.environ.get("SKILLJAIL_LOG_SETTLE", "0.6"))
         start = window_start if window_start is not None else self._start_ts
+        end = window_end if window_end is not None else time.time()
+        time.sleep(settle)  # let the kernel flush trailing denials to the log store
+        try:
+            proc = subprocess.run(
+                ["/usr/bin/log", "show", "--style", "compact",
+                 "--start", self._fmt(start - 1), "--end", self._fmt(end + 2),
+                 "--predicate", 'sender == "Sandbox"'],
+                capture_output=True, text=True, timeout=30,
+            )
+            lines = proc.stdout.splitlines()
+        except Exception:
+            return []
         out: list[Denial] = []
-        for recv_ts, line in self._lines:
+        for line in lines:
             ev_ts = event_timestamp(line)
-            ts = ev_ts if ev_ts is not None else recv_ts
-            if ts < start - 0.25 or ts > end + 0.25:
+            ts = ev_ts if ev_ts is not None else start
+            if ts < start - 0.5 or ts > end + 2.5:
                 continue
             d = parse_denial_line(line, ts)
             if d is None or d.process in self.noise:
                 continue
-            # dtracehelper writes are a harmless artifact of every sandboxed launch
-            if d.target == "/dev/dtracehelper":
+            if d.target == "/dev/dtracehelper":  # harmless artifact of every sandboxed launch
                 continue
             out.append(d)
         return out
