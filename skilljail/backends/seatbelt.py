@@ -61,6 +61,15 @@ HARD_DENY_EXEC = [
 ]
 
 
+def _real_home() -> str:
+    import pwd
+
+    try:
+        return pwd.getpwuid(os.getuid()).pw_dir
+    except Exception:
+        return os.path.expanduser("~")
+
+
 def _darwin_user_dir(name: str) -> str | None:
     try:
         out = subprocess.run(["/usr/bin/getconf", name], capture_output=True, text=True, timeout=5).stdout.strip()
@@ -105,13 +114,21 @@ class SeatbeltBackend(Backend):
         a(";; ---- system read baseline")
         a("(allow file-read* " + " ".join(f"(subpath {q(p)})" for p in SYSTEM_READ_SUBPATHS) + ")")
         a("(allow file-read* " + " ".join(f"(literal {q(p)})" for p in SYSTEM_READ_LITERALS) + ")")
-        # harmless per-user files that CoreFoundation touches on every launch (avoids audit noise)
-        a(f"(allow file-read* (literal {q(policy.home + '/.CFUserTextEncoding')}))")
+        # harmless per-user files CoreFoundation reads on EVERY launch. macOS resolves these via
+        # the real uid's home (getpwuid), not $HOME, so match by basename to catch both.
+        a('(allow file-read* (regex #"/\\.CFUserTextEncoding$"))')
+        for hp in {policy.home, _real_home()}:
+            a(f"(allow file-read* (literal {q(hp + '/.CFUserTextEncoding')}))")
         if not policy.strict_tmp:
             for var in ("DARWIN_USER_TEMP_DIR", "DARWIN_USER_CACHE_DIR"):
                 d = _darwin_user_dir(var)
                 if d:
                     a(f"(allow file-read* file-write* (subpath {q(d)}))  ; {var}")
+            # Non-sensitive cache dirs every toolchain writes on import/run. Not in any sensitive
+            # class, not on PATH, not auto-executed — safe to grant so the jail doesn't break tools.
+            # (Sensitive subdirs like ~/.config/gcloud are still carved out below.)
+            for rel in (".cache", "Library/Caches", ".npm/_cacache", ".cargo/registry/cache", ".pyenv/cache", ".deno/cache", ".bun/install/cache", "Library/pnpm/store", ".cache/uv", ".cache/pip"):
+                a(f"(allow file-read* file-write* (subpath {q(policy.home + '/' + rel)}))  ; cache")
         a("")
         a(";; ---- declared filesystem rules")
         for r in policy.fs_read:

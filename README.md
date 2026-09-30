@@ -89,10 +89,21 @@ persistence, B6 reverse shell), each run for real inside a canary jail:
 - **5/5 (100%) high-severity flagged** by static inference.
 - Composition R1 fires on a reader⨟poster exfil chain (`ask` by default, `deny` under `--strict`).
 
-**MalSkillBench** (real malicious skills with benign twins) — see docs/EVAL.md for the table,
-including the honest negative result that inferring a manifest *from the malware itself* does
-**not** contain it; containment comes from the declared-purpose manifest, composition rules, or
-a reviewer acting on the flags.
+**MalSkillBench** (80 real malicious skills paired with benign twins; 49 had a measurable
+egress/persistence IOC):
+
+- **100% (49/49) contained** when the payload runs under a least-privilege manifest written for
+  the skill's *declared* purpose (the benign twin's) — the thesis.
+- **35%** contained when the manifest is naively inferred *from the malware itself* — the honest
+  negative result: inference legitimizes the malware's own hosts, so containment must come from a
+  manifest reviewed against the skill's stated purpose, from composition rules, or from a
+  reviewer acting on the flags. Static inference high-severity-flagged **65%**.
+
+**Benign utility** (50 top skills under their own inferred manifest): **52.5% run with zero
+denials, 82.5% within 3.** Residual friction is legitimately-denied dangerous capabilities
+(`osascript` app-scripting) and static-inference recall gaps — not the enforcement model; the
+hand-written reference manifests in `examples/` run friction-free. Full table and method in
+[docs/EVAL.md](docs/EVAL.md).
 
 ## Layout
 

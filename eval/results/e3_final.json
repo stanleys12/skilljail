@@ -1,0 +1,257 @@
+{
+ "n": 50,
+ "frictionless_rate": 0.52,
+ "rows": [
+  {
+   "name": "voidborne-advance",
+   "denials": 5,
+   "frictionless": false
+  },
+  {
+   "name": "zhipu-web-search",
+   "denials": 0,
+   "frictionless": true
+  },
+  {
+   "name": "omnifocus",
+   "denials": 56,
+   "frictionless": false
+  },
+  {
+   "name": "solana-skills",
+   "denials": 0,
+   "frictionless": true
+  },
+  {
+   "name": "triple-memory",
+   "denials": 0,
+   "frictionless": true
+  },
+  {
+   "name": "mpc-accept-crypto-payments",
+   "denials": 0,
+   "frictionless": true
+  },
+  {
+   "name": "ve-exchange-rates",
+   "denials": 1,
+   "frictionless": false
+  },
+  {
+   "name": "md-2-pdf",
+   "denials": 0,
+   "frictionless": true
+  },
+  {
+   "name": "nimble-web-search",
+   "denials": 0,
+   "frictionless": true
+  },
+  {
+   "name": "elevenlabs-voices",
+   "denials": 56,
+   "frictionless": false
+  },
+  {
+   "name": "sota-tracker-mcp",
+   "denials": 1,
+   "frictionless": false
+  },
+  {
+   "name": "event-planner",
+   "denials": 0,
+   "frictionless": true
+  },
+  {
+   "name": "volcengine-tos-vectors-skills",
+   "denials": 0,
+   "frictionless": true
+  },
+  {
+   "name": "agentic-paper-digest-skill",
+   "denials": 1,
+   "frictionless": false
+  },
+  {
+   "name": "revenuecat",
+   "denials": 0,
+   "frictionless": true
+  },
+  {
+   "name": "clawdbot-meshyai-skill",
+   "denials": 1,
+   "frictionless": false
+  },
+  {
+   "name": "memory-pipeline",
+   "denials": 2,
+   "frictionless": false
+  },
+  {
+   "name": "whoop-health-analysis",
+   "denials": 0,
+   "frictionless": true
+  },
+  {
+   "name": "mission-control",
+   "denials": 3,
+   "frictionless": false
+  },
+  {
+   "name": "gsc",
+   "denials": 0,
+   "frictionless": true
+  },
+  {
+   "name": "my-tesla",
+   "denials": 6,
+   "frictionless": false
+  },
+  {
+   "name": "edge-tts",
+   "denials": 16,
+   "frictionless": false
+  },
+  {
+   "name": "causal-inference",
+   "denials": 3,
+   "frictionless": false
+  },
+  {
+   "name": "wpclaw-lite",
+   "denials": 1,
+   "frictionless": false
+  },
+  {
+   "name": "relay-to-agent",
+   "denials": 0,
+   "frictionless": true
+  },
+  {
+   "name": "secure-memory-stack",
+   "denials": 19,
+   "frictionless": false
+  },
+  {
+   "name": "remember-all-prompts-daily",
+   "denials": 0,
+   "frictionless": true
+  },
+  {
+   "name": "ridb-search",
+   "denials": 0,
+   "frictionless": true
+  },
+  {
+   "name": "primer",
+   "denials": 0,
+   "frictionless": true
+  },
+  {
+   "name": "tesla-fleet-api",
+   "denials": 4,
+   "frictionless": false
+  },
+  {
+   "name": "pymupdf-pdf-parser-clawdbot-skill",
+   "denials": 9,
+   "frictionless": false
+  },
+  {
+   "name": "hackernews",
+   "denials": 0,
+   "frictionless": true
+  },
+  {
+   "name": "google-tasks",
+   "denials": 0,
+   "frictionless": true
+  },
+  {
+   "name": "peaq-robotics",
+   "denials": 1,
+   "frictionless": false
+  },
+  {
+   "name": "deepwiki",
+   "denials": 0,
+   "frictionless": true
+  },
+  {
+   "name": "model-usage",
+   "denials": 1,
+   "frictionless": false
+  },
+  {
+   "name": "skill-vetting",
+   "denials": 280,
+   "frictionless": false
+  },
+  {
+   "name": "agent-identity",
+   "denials": 2,
+   "frictionless": false
+  },
+  {
+   "name": "octolens",
+   "denials": 0,
+   "frictionless": true
+  },
+  {
+   "name": "get-up",
+   "denials": 0,
+   "frictionless": true
+  },
+  {
+   "name": "senior-computer-vision",
+   "denials": 0,
+   "frictionless": true
+  },
+  {
+   "name": "swiss-transport",
+   "denials": 0,
+   "frictionless": true
+  },
+  {
+   "name": "seede-design",
+   "denials": 0,
+   "frictionless": true
+  },
+  {
+   "name": "cron-backup",
+   "error": "fs.read: unknown path variable $SCRIPT_DIR in '$WORKSPACE/$SCRIPT_DIR/backup.sh' (known: $SKILL, $WORKSPACE, $CWD, $TMP, $HOME)"
+  },
+  {
+   "name": "arc-sentinel",
+   "denials": 19,
+   "frictionless": false
+  },
+  {
+   "name": "finance-news",
+   "denials": 5,
+   "frictionless": false
+  },
+  {
+   "name": "camelcamelcamel-alerts",
+   "denials": 0,
+   "frictionless": true
+  },
+  {
+   "name": "openclaw-obsidian-tasks",
+   "denials": 0,
+   "frictionless": true
+  },
+  {
+   "name": "kameo-free",
+   "error": "fs.read: unknown path variable $SCRIPT_DIR in '$WORKSPACE/$SCRIPT_DIR/enhance_prompt.sh' (known: $SKILL, $WORKSPACE, $CWD, $TMP, $HOME)"
+  },
+  {
+   "name": "gedcom-explorer",
+   "denials": 0,
+   "frictionless": true
+  }
+ ],
+ "within1": 0.66,
+ "within3": 0.74,
+ "osascript_only": 22
+}
