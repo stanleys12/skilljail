@@ -1,0 +1,4 @@
+permissions:
+  version: 1
+  fs: {read: ["$WORKSPACE"], write: ["$WORKSPACE"]}
+  exec: {allow: ["echo"], shell: true}

@@ -1,0 +1,4 @@
+permissions:
+  version: 1
+  fs: {read: ["$WORKSPACE/data"], write: ["$WORKSPACE/data"]}
+  exec: {allow: ["python3"], shell: true}

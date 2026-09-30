@@ -1,0 +1,4 @@
+permissions:
+  version: 1
+  fs: {read: ["$WORKSPACE"], write: ["$WORKSPACE/CHANGELOG.md", "$WORKSPACE/CHANGELOG_NEW.md"]}
+  exec: {allow: ["git", "python3"], shell: true}

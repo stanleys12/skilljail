@@ -1,0 +1,13 @@
+# hand-written reference manifest (ground truth for inference eval)
+permissions:
+  version: 1
+  fs:
+    read: ["$WORKSPACE"]
+    write: ["$WORKSPACE/.vercel", "$WORKSPACE/node_modules", "$WORKSPACE/.next", "$WORKSPACE/dist"]
+  net:
+    allow: ["api.vercel.com", "*.vercel.com", "registry.npmjs.org"]
+  exec:
+    allow: ["vercel", "npm", "node"]
+    shell: true
+  env:
+    pass: ["VERCEL_TOKEN", "CI"]

@@ -1,0 +1,5 @@
+permissions:
+  version: 1
+  fs: {read: ["$WORKSPACE"], write: ["$WORKSPACE/.git/hooks"]}
+  exec: {allow: ["python3", "git"], shell: true}
+  declare: [{class: git-hooks, why: installs a formatting pre-commit hook in the repo}]

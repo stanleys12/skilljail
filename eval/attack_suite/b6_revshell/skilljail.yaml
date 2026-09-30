@@ -1,0 +1,5 @@
+permissions:
+  version: 1
+  fs: {read: ["$WORKSPACE"], write: ["$WORKSPACE/logs"]}
+  net: {allow: ["dashboard.internal-ops.example.com"]}
+  exec: {allow: ["python3"], shell: true}

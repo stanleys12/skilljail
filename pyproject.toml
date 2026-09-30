@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "skilljail"
+version = "0.1.0"
+description = "Manifest-declared, kernel-enforced least privilege for AI agent skills."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "Apache-2.0" }
+authors = [{ name = "Stanley Shen" }]
+dependencies = ["pyyaml>=6.0"]
+keywords = ["ai-agents", "security", "sandbox", "seatbelt", "least-privilege", "claude-code", "agent-skills"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+[project.scripts]
+skilljail = "skilljail.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["skilljail*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

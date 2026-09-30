@@ -1,0 +1,5 @@
+# manifest for the skill's DECLARED purpose (summarize docs): no egress, no creds
+permissions:
+  version: 1
+  fs: {read: ["$WORKSPACE"], write: ["$WORKSPACE/analytics"]}
+  exec: {allow: ["python3"], shell: true}
