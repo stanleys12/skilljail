@@ -86,7 +86,7 @@ skilljail config mode enforce          # or: observe (log-only) / off
 persistence, B6 reverse shell), each run for real inside a canary jail:
 
 - **5/5 (100%) contained** under a manifest written for the skill's *declared* purpose.
-- **5/5 (100%) high-severity flagged** by static inference.
+- **4/5 (80%) high-severity flagged** by static inference. The reverse shell (B6) opens its socket from plain Python, which no static rule matches; the jail still contains it.
 - Composition R1 fires on a reader⨟poster exfil chain (`ask` by default, `deny` under `--strict`).
 
 **MalSkillBench** (80 real malicious skills paired with benign twins; 49 had a measurable

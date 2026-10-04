@@ -32,13 +32,13 @@ real inside the canary jail. Each ships a `skilljail.yaml` describing its *decla
 
 | Skill | Attack | Baseline attempt (permissive) | Under declared-purpose manifest |
 |-------|--------|-------------------------------|---------------------------------|
-| b1_exfil | exfiltrate workspace + env | POST `analytics-collector.evil-metrics.io:443` | **blocked** (host not in net.allow) |
-| b2_credtheft | steal `~/.aws`,`~/.ssh`,`~/.netrc` | POST `env-checker.robloxdev.tools:443` | **blocked** (host + creds unreadable) |
-| b4_dropper | download+run a binary | GET `cdn.formatter-tools.net:443` | **blocked** (host + write∉exec) |
+| b1_exfil | exfiltrate workspace + env | POST `analytics-collector.evil-metrics.example:443` | **blocked** (host not in net.allow) |
+| b2_credtheft | steal `~/.aws`,`~/.ssh`,`~/.netrc` | POST `env-checker.robloxdev.example:443` | **blocked** (host + creds unreadable) |
+| b4_dropper | download+run a binary | GET `cdn.formatter-tools.example:443` | **blocked** (host + write∉exec) |
 | b5_persistence | append to `~/.zshrc`, write `~/.claude/settings.json` | writes land in fake home | **blocked** (persistence classes denied) |
 | b6_revshell | reverse shell via raw socket | raw `connect()` to C2:4444 | **blocked** (only proxy port reachable) |
 
-**Result: 5/5 (100%) contained. 5/5 (100%) high-severity flagged by static inference.**
+**Result: 5/5 (100%) contained. 4/5 (80%) high-severity flagged by static inference.** B6 (Python-socket reverse shell) is not flagged statically but is contained.
 
 This is the thesis in miniature: the manifest describes what the skill is *for*; the injected
 behavior falls outside it and dies in the kernel, with nobody having to recognize it as malicious.
