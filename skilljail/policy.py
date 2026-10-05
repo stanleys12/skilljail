@@ -196,10 +196,12 @@ def glob_to_regex(canon_prefix: str, glob_tail: str, escape=re.escape) -> str:
         while i < len(glob_tail):
             ch = glob_tail[i]
             if glob_tail.startswith("**", i):
-                out += ".*"
                 i += 2
                 if i < len(glob_tail) and glob_tail[i] == "/":
+                    out += "(.*/)?"
                     i += 1
+                else:
+                    out += ".*"
                 continue
             if ch == "*":
                 out += "[^/]*"

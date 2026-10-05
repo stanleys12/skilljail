@@ -28,6 +28,12 @@ def test_glob_to_regex():
     assert re.match(rx, "/ws/docs/a.md") and not re.match(rx, "/ws/docs/sub/a.md") and not re.match(rx, "/ws/docs/a.txt")
     rx2 = glob_to_regex("/ws", "**/*.json")
     assert re.match(rx2, "/ws/a/b/c.json") and re.match(rx2, "/ws/x.json")
+    rx3 = glob_to_regex("/ws", "src/**/out")
+    assert re.match(rx3, "/ws/src/out") and re.match(rx3, "/ws/src/a/b/out/x")
+    assert not re.match(rx3, "/ws/src/layout") and not re.match(rx3, "/ws/src/a/checkout")
+    rx4 = glob_to_regex("/ws", "**/.env")
+    assert re.match(rx4, "/ws/.env") and re.match(rx4, "/ws/a/.env")
+    assert not re.match(rx4, "/ws/prod.env")
 
 
 @pytest.fixture
