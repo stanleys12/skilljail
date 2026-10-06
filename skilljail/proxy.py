@@ -164,6 +164,13 @@ class EgressProxy:
 
             async def _shutdown():
                 self._server.close()
+                # Python 3.11's wait_closed() does not wait for open connections; cancel them so their handlers finish
+                pending = [t for t in asyncio.all_tasks() if t is not asyncio.current_task()]
+                if pending:
+                    _, pending = await asyncio.wait(pending, timeout=1)
+                for t in pending:
+                    t.cancel()
+                await asyncio.gather(*pending, return_exceptions=True)
                 await self._server.wait_closed()
 
             fut = asyncio.run_coroutine_threadsafe(_shutdown(), loop)
@@ -245,7 +252,7 @@ class EgressProxy:
         head = f"HTTP/1.1 {code} {reason}\r\n" + "".join(f"{k}: {v}\r\n" for k, v in h.items()) + "\r\n"
         return head.encode() + body
 
-    async def _pipe(self, r: asyncio.StreamReader, w: asyncio.StreamWriter) -> int:
+    async def _pipe(self, r: asyncio.StreamReader, w: asyncio.StreamWriter, ev: ProxyEvent, counter: str) -> int:
         n = 0
         try:
             while True:
@@ -253,6 +260,7 @@ class EgressProxy:
                 if not data:
                     break
                 n += len(data)
+                setattr(ev, counter, n)
                 w.write(data)
                 await w.drain()
         except (asyncio.TimeoutError, ConnectionError, asyncio.IncompleteReadError):
@@ -321,8 +329,10 @@ class EgressProxy:
                 return
 
             if decision == "sink":
-                await self._sink(method, headers, reader, writer, ev)
-                self._emit(ev)
+                try:
+                    await self._sink(method, headers, reader, writer, ev)
+                finally:
+                    self._emit(ev)
                 return
 
             # allow → dial upstream
@@ -349,10 +359,14 @@ class EgressProxy:
                 up_w.write(("\r\n".join(req_lines) + "\r\n\r\n").encode("latin-1"))
                 await up_w.drain()
 
-            up_task = asyncio.create_task(self._pipe(reader, up_w))
-            down_task = asyncio.create_task(self._pipe(up_r, writer))
-            ev.bytes_up, ev.bytes_down = await asyncio.gather(up_task, down_task)
-            self._emit(ev)
+            up_task = asyncio.create_task(self._pipe(reader, up_w, ev, "bytes_up"))
+            down_task = asyncio.create_task(self._pipe(up_r, writer, ev, "bytes_down"))
+            try:
+                await asyncio.gather(up_task, down_task)
+            finally:
+                # also on shutdown mid-transfer: an allowed connection must still reach the audit log
+                up_task.cancel(); down_task.cancel()
+                self._emit(ev)
         except Exception as e:  # never let a handler crash the server
             try:
                 writer.write(self._http_response(500, "Proxy Error", body=str(e).encode()))
