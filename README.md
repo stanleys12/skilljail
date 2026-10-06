@@ -1,5 +1,7 @@
 # SkillJail
 
+[![tests](https://github.com/stanleys12/skilljail/actions/workflows/tests.yml/badge.svg)](https://github.com/stanleys12/skilljail/actions/workflows/tests.yml)
+
 **Manifest-declared, kernel-enforced least privilege for AI agent skills.**
 
 ![SkillJail blocking a prompt-injected skill from reading AWS keys, exfiltrating data and opening a reverse shell](docs/demo.gif)
