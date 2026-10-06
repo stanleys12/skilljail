@@ -75,6 +75,9 @@ def skilljail_command() -> str:
     exe = shutil.which("skilljail")
     if exe:
         return shlex.quote(exe)
+    launcher = Path(__file__).resolve().parents[2] / "bin" / "skilljail"
+    if launcher.is_file():
+        return shlex.quote(str(launcher))
     return f"{shlex.quote(sys.executable)} -m skilljail.cli"
 
 
