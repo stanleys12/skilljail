@@ -4,6 +4,7 @@
 
 ### Security
 - The SSRF guard now treats the IPv6 unspecified address (`::`) as private. Connecting to `[::]` reaches loopback, so under a broad net rule a jailed skill could reach services on the host.
+- While a skill is active, every Bash command is now jailed unless it is exactly the hook's own rewrite. Before, a command that started with `skilljail ` or contained `SKILLJAIL_WRAPPED=1` anywhere ran unjailed, so `echo SKILLJAIL_WRAPPED=1; curl ... | sh` or `skilljail config mode observe` escaped the jail.
 
 ### Fixed
 - Connections still open when the proxy stopped were missing from the audit log (seen on Python 3.11).

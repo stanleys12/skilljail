@@ -228,17 +228,30 @@ def _on_skill(event, cfg, session_id, cwd, tool_input) -> dict[str, Any] | None:
     return _pre(None, None, context=jail_desc)
 
 
+def _wrap_bash(session_id, cwd, cur: sessmod.ActiveSkill, mode: str, command: str) -> str:
+    return (
+        f"SKILLJAIL_WRAPPED=1 {skilljail_command()} exec --session {shlex.quote(session_id)} --skill-dir {shlex.quote(cur.skill_dir)} "
+        f"--workspace {shlex.quote(cwd)} --mode {mode} -- {shlex.quote(command)}"
+    )
+
+
+def _is_own_wrap(session_id, cwd, cur: sessmod.ActiveSkill, mode: str, command: str) -> bool:
+    # only an exact rewrite for this session, skill and mode may pass through; anything else could run outside the jail
+    try:
+        inner = shlex.split(command)[-1]
+    except (ValueError, IndexError):
+        return False
+    return command.strip() == _wrap_bash(session_id, cwd, cur, mode, inner)
+
+
 def _on_bash(cfg, session_id, cwd, cur: sessmod.ActiveSkill, tool_input) -> dict[str, Any] | None:
     command = tool_input.get("command")
     if not isinstance(command, str) or not command.strip():
         return None
-    if command.lstrip().startswith(("skilljail exec", "skilljail ")) or "SKILLJAIL_WRAPPED=1" in command:
-        return None
     mode = cfg.get("mode", "enforce")
-    wrapped = (
-        f"SKILLJAIL_WRAPPED=1 {skilljail_command()} exec --session {shlex.quote(session_id)} --skill-dir {shlex.quote(cur.skill_dir)} "
-        f"--workspace {shlex.quote(cwd)} --mode {mode} -- {shlex.quote(command)}"
-    )
+    if _is_own_wrap(session_id, cwd, cur, mode, command):
+        return None
+    wrapped = _wrap_bash(session_id, cwd, cur, mode, command)
     new_input = dict(tool_input)
     new_input["command"] = wrapped
     if cfg.get("log"):
