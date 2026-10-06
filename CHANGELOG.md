@@ -5,6 +5,9 @@
 ### Security
 - The SSRF guard now treats the IPv6 unspecified address (`::`) as private. Connecting to `[::]` reaches loopback, so under a broad net rule a jailed skill could reach services on the host.
 
+### Fixed
+- Connections still open when the proxy stopped were missing from the audit log (seen on Python 3.11).
+
 ### Added
 - Test suite runs on GitHub Actions (macOS, Python 3.11 to 3.13).
 - Security policy and private vulnerability reporting.
