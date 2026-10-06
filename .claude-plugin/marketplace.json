@@ -1,0 +1,14 @@
+{
+  "name": "skilljail",
+  "owner": {
+    "name": "Stanley Shen"
+  },
+  "description": "SkillJail: kernel-enforced least privilege for Claude Code skills.",
+  "plugins": [
+    {
+      "name": "skilljail",
+      "source": "./",
+      "description": "Kernel-enforced least privilege for agent skills (macOS Seatbelt; Linux bwrap partial)."
+    }
+  ]
+}

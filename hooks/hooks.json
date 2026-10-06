@@ -1,0 +1,102 @@
+{
+  "description": "SkillJail: jail each skill's Bash commands under its manifest; check file and web tools against it.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/bin/skilljail",
+            "args": [
+              "hook"
+            ],
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Skill",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/bin/skilljail",
+            "args": [
+              "hook"
+            ],
+            "timeout": 30
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/bin/skilljail",
+            "args": [
+              "hook"
+            ],
+            "timeout": 30
+          }
+        ]
+      },
+      {
+        "matcher": "Read|Write|Edit|MultiEdit|Glob|Grep|NotebookEdit|WebFetch",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/bin/skilljail",
+            "args": [
+              "hook"
+            ],
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/bin/skilljail",
+            "args": [
+              "hook"
+            ],
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/bin/skilljail",
+            "args": [
+              "hook"
+            ],
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/bin/skilljail",
+            "args": [
+              "hook"
+            ],
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}

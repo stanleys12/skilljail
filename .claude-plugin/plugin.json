@@ -1,0 +1,18 @@
+{
+  "name": "skilljail",
+  "version": "0.1.0",
+  "description": "Kernel-enforced least privilege for agent skills: each skill's Bash commands run in a Seatbelt jail compiled from its skilljail.yaml manifest, with an egress proxy for network rules.",
+  "author": {
+    "name": "Stanley Shen"
+  },
+  "homepage": "https://github.com/stanleys12/skilljail",
+  "repository": "https://github.com/stanleys12/skilljail",
+  "license": "Apache-2.0",
+  "keywords": [
+    "security",
+    "sandbox",
+    "skills",
+    "least-privilege",
+    "seatbelt"
+  ]
+}

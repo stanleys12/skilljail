@@ -1,0 +1,4 @@
+#!/bin/sh
+# Runs the CLI from this checkout, so the Claude Code plugin works without a pip install (needs python3 >= 3.11 with pyyaml).
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+PYTHONPATH="$ROOT${PYTHONPATH:+:$PYTHONPATH}" exec python3 -m skilljail.cli "$@"

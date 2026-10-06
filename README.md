@@ -2,6 +2,10 @@
 
 **Manifest-declared, kernel-enforced least privilege for AI agent skills.**
 
+![SkillJail blocking a prompt-injected skill from reading AWS keys, exfiltrating data and opening a reverse shell](docs/demo.gif)
+
+*Real output, recorded against a throwaway `$HOME` with fake credentials.*
+
 Agent skills (`SKILL.md` packages for Claude Code, OpenCode, Gemini CLI, …) are third-party
 code *and* third-party instructions, installed with about the trust of an npm dependency.
 Marketplaces host hundreds of thousands of them; audits find security flaws in ~37% and active
@@ -62,17 +66,24 @@ command to run in the jail; `Stop` deactivates. One command, `skilljail install`
 ## Install & try it
 
 ```bash
-pip install -e .
+pip install git+https://github.com/stanleys12/skilljail   # or: git clone ... && pip install -e .
 skilljail doctor                       # check the Seatbelt/bwrap backend
 skilljail infer examples/skills/vercel-deploy      # draft a manifest, with evidence + flags
 skilljail check examples/skills/vercel-deploy      # policy, risks, lock status, decision
-skilljail run --skill examples/skills/csv-report -- 'python3 scripts/summarize.py data/input.csv'
+cd examples/skills/csv-report && skilljail run --skill . -- 'python3 scripts/summarize.py data/input.csv' && cd -
 
 # See containment on a real attack (no network is touched — canary home + sink proxy):
 skilljail eval --attack-suite eval/attack_suite --experiments attack,e4
 ```
 
-Wire into Claude Code:
+Wire into Claude Code, either as a plugin (no pip install needed; requires python3 >= 3.11 with pyyaml):
+
+```
+/plugin marketplace add stanleys12/skilljail
+/plugin install skilljail@skilljail
+```
+
+or with the CLI:
 
 ```bash
 skilljail install                      # adds hooks to ~/.claude/settings.json (backs it up)
