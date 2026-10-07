@@ -13,6 +13,9 @@
     "sandbox",
     "skills",
     "least-privilege",
-    "seatbelt"
+    "seatbelt",
+    "claude-code",
+    "agent-skills",
+    "egress-proxy"
   ]
 }
