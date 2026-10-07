@@ -23,6 +23,8 @@ Changes to the policy compiler, the proxy or the hooks should come with a test t
 skilljail eval --attack-suite eval/attack_suite --experiments attack,e4
 ```
 
+The MalSkillBench experiments need the dataset checked out separately and pointed at with `--malskillbench /path/to/MalSkillBench/Dataset/Skills`; see [docs/EVAL.md](docs/EVAL.md) for how those numbers are produced.
+
 ## Where things live
 
 - `skilljail/manifest.py`, `policy.py`: the manifest format and what it compiles to
