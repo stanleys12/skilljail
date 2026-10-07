@@ -12,6 +12,21 @@ license = { text = "Apache-2.0" }
 authors = [{ name = "Stanley Shen" }]
 dependencies = ["pyyaml>=6.0"]
 keywords = ["ai-agents", "security", "sandbox", "seatbelt", "least-privilege", "claude-code", "agent-skills"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: MacOS :: MacOS X",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3 :: Only",
+    "Topic :: Security",
+]
+
+[project.urls]
+Homepage = "https://github.com/stanleys12/skilljail"
+Repository = "https://github.com/stanleys12/skilljail"
+Issues = "https://github.com/stanleys12/skilljail/issues"
+Changelog = "https://github.com/stanleys12/skilljail/blob/main/CHANGELOG.md"
 
 [project.optional-dependencies]
 dev = ["pytest>=8"]
