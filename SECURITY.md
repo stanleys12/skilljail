@@ -2,6 +2,10 @@
 
 SkillJail is a containment tool, so a bypass is the most important kind of bug.
 
+## Supported versions
+
+This is a pre-1.0 research prototype. Only the latest release and `main` get fixes; there are no backports to older tags.
+
 ## Reporting a vulnerability
 
 Please report bypasses privately through GitHub: **Security → Report a vulnerability** on this repository. Don't open a public issue for them.
