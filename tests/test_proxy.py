@@ -16,6 +16,8 @@ def test_rule_matching():
     assert NetRule.parse("*.example.com").matches("api.example.com", 443)
     assert not NetRule.parse("*.example.com").matches("example.com", 443)  # apex excluded
     assert not NetRule.parse("*.example.com").matches("evilexample.com", 443)
+    assert not NetRule.parse("*.example.com").matches("example.com.evil.com", 443)  # suffix-position spoof
+    assert NetRule.parse("*.example.com").matches("a.b.example.com", 443)  # deep subdomains allowed
     assert NetRule.parse("*").matches("anything.tld", 443)
     assert NetRule.parse("10.0.0.5:53").matches("10.0.0.5", 53)
 
