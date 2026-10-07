@@ -8,3 +8,9 @@ dist/
 eval/results/*.json
 eval/results/*.log
 .skilljail/
+.ruff_cache/
+.mypy_cache/
+.venv/
+venv/
+.coverage
+htmlcov/
