@@ -8,6 +8,7 @@
 
 ### Fixed
 - Connections still open when the proxy stopped were missing from the audit log (seen on Python 3.11).
+- Installed as a plugin without a pip install, the jailed Bash rewrite fell back to `python -m skilljail.cli`, which could not import the package from the workspace. It now runs through the checkout's own launcher when `skilljail` is not on `PATH`.
 
 ### Added
 - Test suite runs on GitHub Actions (macOS, Python 3.11 to 3.13).
