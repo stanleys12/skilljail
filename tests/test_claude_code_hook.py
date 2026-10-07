@@ -1,3 +1,4 @@
+import json
 import os
 import shlex
 import subprocess
@@ -19,6 +20,20 @@ def test_skilljail_command_uses_checkout_launcher_without_install(monkeypatch, t
     assert r.returncode == 0, r.stderr
     assert r.stdout.startswith("skilljail ")
 
+
+
+def test_plugin_hooks_match_installed_hooks():
+    plugin = json.loads((ROOT / "hooks" / "hooks.json").read_text())["hooks"]
+    installed = claude_code.hook_entries("skilljail hook")
+    assert {e: [g.get("matcher") for g in groups] for e, groups in plugin.items()} == {
+        e: [g.get("matcher") for g in groups] for e, groups in installed.items()
+    }
+    for groups in plugin.values():
+        for group in groups:
+            for hook in group["hooks"]:
+                assert hook["command"] == "${CLAUDE_PLUGIN_ROOT}/bin/skilljail"
+                assert hook["args"] == ["hook"]
+                assert hook["timeout"] == installed["SessionStart"][0]["hooks"][0]["timeout"]
 
 def _active(tmp_path):
     from skilljail.session import ActiveSkill
