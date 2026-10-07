@@ -133,3 +133,7 @@ tests/             40 unit tests
 Research prototype, macOS-first (Seatbelt tested; Linux/bwrap partial). Not a VM; not a
 scanner replacement; does not stop permission-reuse within declared scope. See
 [docs/LIMITATIONS.md](docs/LIMITATIONS.md). Apache-2.0.
+
+## Contributing
+
+Bug reports and pull requests are welcome; see [CONTRIBUTING.md](CONTRIBUTING.md) for setup and tests, and [SECURITY.md](SECURITY.md) for reporting a sandbox bypass privately. Changes are logged in [CHANGELOG.md](CHANGELOG.md).
