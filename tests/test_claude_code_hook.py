@@ -22,6 +22,23 @@ def test_skilljail_command_uses_checkout_launcher_without_install(monkeypatch, t
 
 
 
+def test_launcher_skips_a_python3_older_than_3_11(tmp_path):
+    fake = tmp_path / "fakebin"
+    fake.mkdir()
+    old = fake / "python3"
+    old.write_text("#!/bin/sh\nexit 1\n")
+    old.chmod(0o755)
+    env = {"PATH": f"{fake}:/usr/bin:/bin", "HOME": str(tmp_path)}
+    launcher = str(ROOT / "bin" / "skilljail")
+    r = subprocess.run([launcher, "--version"], cwd=tmp_path, env=env, capture_output=True, text=True)
+    assert r.returncode == 127
+    assert "python3 (>= 3.11) is required" in r.stderr
+    (fake / "python3.11").symlink_to(sys.executable)
+    r = subprocess.run([launcher, "--version"], cwd=tmp_path, env=env, capture_output=True, text=True)
+    assert r.returncode == 0, r.stderr
+    assert r.stdout.startswith("skilljail ")
+
+
 def test_plugin_hooks_match_installed_hooks():
     plugin = json.loads((ROOT / "hooks" / "hooks.json").read_text())["hooks"]
     installed = claude_code.hook_entries("skilljail hook")
