@@ -32,8 +32,26 @@ def test_launcher_skips_a_python3_older_than_3_11(tmp_path):
     launcher = str(ROOT / "bin" / "skilljail")
     r = subprocess.run([launcher, "--version"], cwd=tmp_path, env=env, capture_output=True, text=True)
     assert r.returncode == 127
-    assert "python3 (>= 3.11) is required" in r.stderr
+    assert "python3 (>= 3.11) with pyyaml is required" in r.stderr
     (fake / "python3.11").symlink_to(sys.executable)
+    r = subprocess.run([launcher, "--version"], cwd=tmp_path, env=env, capture_output=True, text=True)
+    assert r.returncode == 0, r.stderr
+    assert r.stdout.startswith("skilljail ")
+
+
+def test_launcher_skips_a_python3_without_pyyaml(tmp_path):
+    fake = tmp_path / "fakebin"
+    fake.mkdir()
+    no_site = fake / "python3"
+    no_site.write_text(f'#!/bin/sh\nexec "{sys.executable}" -S "$@"\n')
+    no_site.chmod(0o755)
+    env = {"PATH": f"{fake}:/usr/bin:/bin", "HOME": str(tmp_path)}
+    launcher = str(ROOT / "bin" / "skilljail")
+    r = subprocess.run([launcher, "--version"], cwd=tmp_path, env=env, capture_output=True, text=True)
+    assert r.returncode == 127
+    assert "with pyyaml is required" in r.stderr
+    assert "Traceback" not in r.stderr
+    (fake / "python3.12").symlink_to(sys.executable)
     r = subprocess.run([launcher, "--version"], cwd=tmp_path, env=env, capture_output=True, text=True)
     assert r.returncode == 0, r.stderr
     assert r.stdout.startswith("skilljail ")

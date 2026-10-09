@@ -3,13 +3,13 @@
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 PY=
 for cand in python3 python3.14 python3.13 python3.12 python3.11; do
-    if command -v "$cand" >/dev/null 2>&1 && "$cand" -c 'import sys; sys.exit(sys.version_info < (3, 11))' 2>/dev/null; then
+    if command -v "$cand" >/dev/null 2>&1 && "$cand" -c 'import sys, yaml; sys.exit(sys.version_info < (3, 11))' 2>/dev/null; then
         PY="$cand"
         break
     fi
 done
 if [ -z "$PY" ]; then
-    echo "skilljail: python3 (>= 3.11) is required but was not found on PATH" >&2
+    echo "skilljail: python3 (>= 3.11) with pyyaml is required but was not found on PATH (pip install pyyaml)" >&2
     exit 127
 fi
 PYTHONPATH="$ROOT${PYTHONPATH:+:$PYTHONPATH}" exec "$PY" -m skilljail.cli "$@"

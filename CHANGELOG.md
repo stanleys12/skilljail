@@ -10,6 +10,7 @@
 - Connections still open when the proxy stopped were missing from the audit log (seen on Python 3.11).
 - Installed as a plugin without a pip install, the jailed Bash rewrite fell back to `python -m skilljail.cli`, which could not import the package from the workspace. It now runs through the checkout's own launcher when `skilljail` is not on `PATH`.
 - The plugin launcher ran the first `python3` on `PATH` even when it was older than 3.11 (stock macOS ships 3.9), so every hook crashed with an import traceback. It now picks the first `python3`, `python3.14` ... `python3.11` that is 3.11 or newer, and says so clearly when there is none.
+- The plugin launcher also picked a `python3` without pyyaml (a fresh Homebrew Python has none), so every hook crashed with `ModuleNotFoundError: No module named 'yaml'`. It now skips interpreters that cannot import yaml and names pyyaml in the error when none qualifies.
 
 ### Added
 - Test suite runs on GitHub Actions (macOS, Python 3.11 to 3.13).
