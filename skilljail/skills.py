@@ -27,11 +27,12 @@ def _candidates(workspace: str | None) -> list[Path]:
     return out
 
 
-def resolve_skill_dir(name: str, workspace: str | None = None, max_depth: int = 5) -> Path | None:
+def resolve_skill_dir(name: str, workspace: str | None = None, max_depth: int = 7) -> Path | None:
     """Find ``<root>/**/<name>/SKILL.md``. Handles ``plugin:skill`` and leading '/'."""
     name = name.strip().lstrip("/")
+    plugin = None
     if ":" in name:
-        _, name = name.rsplit(":", 1)
+        plugin, name = name.rsplit(":", 1)
     if not name or "/" in name or name.startswith("."):
         return None
     p = Path(name)
@@ -41,7 +42,7 @@ def resolve_skill_dir(name: str, workspace: str | None = None, max_depth: int = 
         if not root.is_dir():
             continue
         direct = root / name
-        if (direct / SKILL_FILE).exists():
+        if not plugin and (direct / SKILL_FILE).exists():
             return direct.resolve()
         # nested (plugins, synced bundles): bounded walk
         for dirpath, dirnames, filenames in os.walk(root):
@@ -49,12 +50,12 @@ def resolve_skill_dir(name: str, workspace: str | None = None, max_depth: int = 
             if len(depth) >= max_depth:
                 dirnames[:] = []
                 continue
-            if Path(dirpath).name == name and SKILL_FILE in filenames:
+            if Path(dirpath).name == name and SKILL_FILE in filenames and (not plugin or plugin in depth):
                 return Path(dirpath).resolve()
     return None
 
 
-def list_skills(workspace: str | None = None, max_depth: int = 5) -> list[Path]:
+def list_skills(workspace: str | None = None, max_depth: int = 7) -> list[Path]:
     found: dict[str, Path] = {}
     for root in _candidates(workspace):
         if not root.is_dir():
