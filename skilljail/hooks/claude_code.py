@@ -314,8 +314,26 @@ def hook_entries(command: str) -> dict[str, list[dict[str, Any]]]:
     }
 
 
+def _is_hook_command(command: str) -> bool:
+    if HOOK_MARKER in command:
+        return True
+    try:
+        argv = shlex.split(command)
+    except ValueError:
+        return False
+    return len(argv) >= 2 and argv[-1] == "hook" and "skilljail" in argv[-2]
+
+
 def _is_ours(entry: dict[str, Any]) -> bool:
-    return any(HOOK_MARKER in (hk.get("command") or "") for hk in entry.get("hooks", []))
+    return any(_is_hook_command(hk.get("command") or "") for hk in entry.get("hooks", []))
+
+
+def is_installed(settings_path: Path) -> bool:
+    try:
+        settings = json.loads(settings_path.read_text(encoding="utf-8") or "{}")
+    except (OSError, json.JSONDecodeError):
+        return False
+    return any(_is_ours(e) for entries in (settings.get("hooks") or {}).values() for e in entries)
 
 
 def install(settings_path: Path, command: str | None = None, dry_run: bool = False) -> tuple[dict[str, Any], dict[str, Any]]:

@@ -364,13 +364,12 @@ def cmd_doctor(a) -> int:
         except Exception as e:
             print(f"sandbox-exec smoke: FAILED {e}")
         print(f"unified log telemetry: {'available' if shutil.which('log') else 'unavailable'} (/usr/bin/log stream)")
-    from .hooks.claude_code import CONFIG_PATH, load_config
+    from .hooks.claude_code import CONFIG_PATH, is_installed, load_config
 
     print(f"config: {CONFIG_PATH} → {json.dumps(load_config())}")
     settings = Path(os.path.expanduser("~/.claude/settings.json"))
     if settings.exists():
-        txt = settings.read_text(encoding="utf-8")
-        print(f"claude code hooks: {'installed' if 'skilljail hook' in txt else 'not installed (run `skilljail install`)'}")
+        print(f"claude code hooks: {'installed' if is_installed(settings) else 'not installed (run `skilljail install`)'}")
     return 0
 
 
