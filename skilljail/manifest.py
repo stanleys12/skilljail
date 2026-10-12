@@ -216,6 +216,9 @@ def parse_manifest_dict(data: Any, *, source: str = "dict", source_path: Path | 
     for i, d in enumerate(decl_raw):
         if not isinstance(d, dict) or "class" not in d:
             raise ManifestError(f"declare[{i}] must be a mapping with 'class' and 'why', got {d!r}")
+        bad = set(d) - {"class", "why"}
+        if bad:
+            raise ManifestError(f"declare[{i}] has unknown keys {sorted(bad)}; allowed: ['class', 'why']")
         cls = str(d["class"]).strip()
         why = str(d.get("why", "")).strip()
         if not _CLASS_NAME_RE.match(cls):

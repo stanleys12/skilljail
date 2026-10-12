@@ -90,3 +90,8 @@ def test_invalid_manifest_errors_name_key_and_expectation():
         parse_manifest_dict({"fs": {"execute": []}})
     with pytest.raises(ManifestError, match=r"declare\[0\]\.class 'SSH!' is not a valid class name; expected lowercase"):
         parse_manifest_dict({"declare": [{"class": "SSH!", "why": "adds a deploy key"}]})
+
+
+def test_declare_rejects_unknown_keys():
+    with pytest.raises(ManifestError, match=r"declare\[0\] has unknown keys \['scope'\]; allowed: \['class', 'why'\]"):
+        parse_manifest_dict({"declare": [{"class": "ssh", "why": "deploy key for git push", "scope": "read-only"}]})
