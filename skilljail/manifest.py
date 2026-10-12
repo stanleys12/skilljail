@@ -160,18 +160,18 @@ def parse_manifest_dict(data: Any, *, source: str = "dict", source_path: Path | 
     known = {"version", "fs", "net", "exec", "env", "declare"}
     unknown = set(data) - known
     if unknown:
-        raise ManifestError(f"unknown manifest keys: {sorted(unknown)} (allowed: {sorted(known)})")
+        raise ManifestError(f"unknown manifest keys: {sorted(unknown)}; allowed: {sorted(known)}")
 
     version = data.get("version", SCHEMA_VERSION)
     if version != SCHEMA_VERSION:
-        raise ManifestError(f"unsupported manifest version {version!r}; this build supports {SCHEMA_VERSION}")
+        raise ManifestError(f"unsupported manifest version {version!r}; expected {SCHEMA_VERSION}")
 
     fs_raw = data.get("fs") or {}
     if not isinstance(fs_raw, dict):
-        raise ManifestError("fs must be a mapping with read/write lists")
+        raise ManifestError(f"fs must be a mapping with read/write lists, got {type(fs_raw).__name__}")
     bad = set(fs_raw) - {"read", "write"}
     if bad:
-        raise ManifestError(f"fs has unknown keys {sorted(bad)}")
+        raise ManifestError(f"fs has unknown keys {sorted(bad)}; allowed: ['read', 'write']")
     fs = FsPerms(read=_as_str_list(fs_raw.get("read"), "fs.read"), write=_as_str_list(fs_raw.get("write"), "fs.write"))
     for p in fs.read + fs.write:
         if "\x00" in p or p.strip() == "":
@@ -179,31 +179,31 @@ def parse_manifest_dict(data: Any, *, source: str = "dict", source_path: Path | 
 
     net_raw = data.get("net") or {}
     if not isinstance(net_raw, dict):
-        raise ManifestError("net must be a mapping with an allow list")
+        raise ManifestError(f"net must be a mapping with an allow list, got {type(net_raw).__name__}")
     bad = set(net_raw) - {"allow"}
     if bad:
-        raise ManifestError(f"net has unknown keys {sorted(bad)}")
+        raise ManifestError(f"net has unknown keys {sorted(bad)}; allowed: ['allow']")
     net = NetPerms(allow=[r.lower() for r in _as_str_list(net_raw.get("allow"), "net.allow")])
     for r in net.allow:
         validate_net_rule(r)
 
     exec_raw = data.get("exec") or {}
     if not isinstance(exec_raw, dict):
-        raise ManifestError("exec must be a mapping with allow list and optional shell flag")
+        raise ManifestError(f"exec must be a mapping with allow list and optional shell flag, got {type(exec_raw).__name__}")
     bad = set(exec_raw) - {"allow", "shell"}
     if bad:
-        raise ManifestError(f"exec has unknown keys {sorted(bad)}")
+        raise ManifestError(f"exec has unknown keys {sorted(bad)}; allowed: ['allow', 'shell']")
     shell = exec_raw.get("shell", False)
     if not isinstance(shell, bool):
-        raise ManifestError("exec.shell must be a boolean")
+        raise ManifestError(f"exec.shell must be a boolean, got {shell!r}")
     ex = ExecPerms(allow=_as_str_list(exec_raw.get("allow"), "exec.allow"), shell=shell)
 
     env_raw = data.get("env") or {}
     if not isinstance(env_raw, dict):
-        raise ManifestError("env must be a mapping with a pass list")
+        raise ManifestError(f"env must be a mapping with a pass list, got {type(env_raw).__name__}")
     bad = set(env_raw) - {"pass"}
     if bad:
-        raise ManifestError(f"env has unknown keys {sorted(bad)}")
+        raise ManifestError(f"env has unknown keys {sorted(bad)}; allowed: ['pass']")
     env = EnvPerms(pass_=_as_str_list(env_raw.get("pass"), "env.pass"))
     for name in env.pass_:
         if not _ENV_NAME_RE.match(name):
@@ -211,15 +211,15 @@ def parse_manifest_dict(data: Any, *, source: str = "dict", source_path: Path | 
 
     decl_raw = data.get("declare") or []
     if not isinstance(decl_raw, list):
-        raise ManifestError("declare must be a list of {class, why}")
+        raise ManifestError(f"declare must be a list of {{class, why}}, got {type(decl_raw).__name__}")
     declare: list[Declaration] = []
     for i, d in enumerate(decl_raw):
         if not isinstance(d, dict) or "class" not in d:
-            raise ManifestError(f"declare[{i}] must be a mapping with 'class' and 'why'")
+            raise ManifestError(f"declare[{i}] must be a mapping with 'class' and 'why', got {d!r}")
         cls = str(d["class"]).strip()
         why = str(d.get("why", "")).strip()
         if not _CLASS_NAME_RE.match(cls):
-            raise ManifestError(f"declare[{i}].class {cls!r} is not a valid class name")
+            raise ManifestError(f"declare[{i}].class {cls!r} is not a valid class name; expected lowercase letters, digits and '-', starting with a letter")
         if len(why) < 8:
             raise ManifestError(f"declare[{i}] for class {cls!r} needs a real justification in 'why' (>= 8 chars)")
         declare.append(Declaration(cls=cls, why=why))

@@ -79,3 +79,14 @@ def test_default_manifest_executes_nothing(tmp_path: Path):
     m = load_manifest(sk)
     assert m.source == "default" and m.exec.allow == [] and m.net.allow == [] and m.fs.read == ["$SKILL"]
     assert default_manifest().is_empty() is False  # has $SKILL read
+
+
+def test_invalid_manifest_errors_name_key_and_expectation():
+    with pytest.raises(ManifestError, match=r"exec\.shell must be a boolean, got 'yes'"):
+        parse_manifest_dict({"exec": {"shell": "yes"}})
+    with pytest.raises(ManifestError, match=r"net must be a mapping.*got list"):
+        parse_manifest_dict({"net": ["example.com"]})
+    with pytest.raises(ManifestError, match=r"fs has unknown keys \['execute'\]; allowed: \['read', 'write'\]"):
+        parse_manifest_dict({"fs": {"execute": []}})
+    with pytest.raises(ManifestError, match=r"declare\[0\]\.class 'SSH!' is not a valid class name; expected lowercase"):
+        parse_manifest_dict({"declare": [{"class": "SSH!", "why": "adds a deploy key"}]})
