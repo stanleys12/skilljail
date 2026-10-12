@@ -1,0 +1,4 @@
+permissions:
+  version: 1
+  fs: {read: ["$WORKSPACE/logs"]}
+  exec: {allow: ["python3"], shell: true}
