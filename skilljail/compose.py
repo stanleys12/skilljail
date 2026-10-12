@@ -106,7 +106,7 @@ def evaluate_activation(
         prior = session.all_seen()
         prior_reads = session.classes_read_so_far()
         prior_egress = session.egress_so_far()
-        # new skill brings egress while the session already read secrets
+        # new skill adds network egress after earlier skills in the session read sensitive classes
         if prior_reads and policy.net_allow:
             readers = [s.name for s in prior if s.classes_read]
             # hosts the new skill can reach that no *reading* skill could
