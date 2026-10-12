@@ -1,0 +1,4 @@
+INFO started
+WARN slow query
+ERROR connection refused
+INFO done

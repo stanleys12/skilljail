@@ -6,6 +6,7 @@ Each folder is a skill with a hand-written `skilljail.yaml` reference manifest. 
 |-------|--------------|--------|
 | `csv-report` | Summarizes a CSV in the workspace | read/write `$WORKSPACE/data`, run `python3`, no network |
 | `changelog-gen` | Builds a CHANGELOG from git history | read `$WORKSPACE`, write the changelog files, run `git` |
+| `log-scan` | Counts ERROR/WARN lines in a log file | read-only `$WORKSPACE/logs`, run `python3`, no network |
 | `vercel-deploy` | Deploys the project to Vercel | the Vercel/npm hosts, the `vercel`/`npm`/`node` executables, `$VERCEL_TOKEN` |
 
 Try one:
