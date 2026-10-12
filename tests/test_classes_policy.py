@@ -123,3 +123,13 @@ def test_path_allowed_write_implies_read(skill):
     assert p.path_allowed(str(ws / "out" / "a"), "read")[0]
     assert p.path_allowed(str(ws / "out" / "a"), "write")[0]
     assert not p.path_allowed(str(ws / "other"), "write")[0]
+
+
+def test_write_cannot_escape_workspace_via_symlink_or_dotdot(skill):
+    sk, ws, tmp, home = skill
+    (ws / "out").mkdir()
+    (ws / "out" / "link").symlink_to(home / ".ssh")
+    m = parse_manifest_dict({"fs": {"write": ["$WORKSPACE/out"]}})
+    p = build_policy(m, sk, ws, tmp_dir=tmp, home=str(home))
+    assert not p.path_allowed(str(ws / "out" / "link" / "authorized_keys"), "write")[0]
+    assert not p.path_allowed(str(ws / "out" / ".." / ".." / "home" / "evil"), "write")[0]
