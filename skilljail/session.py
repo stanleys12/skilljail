@@ -56,7 +56,7 @@ class Session:
         return act[-1] if act else None
 
     def all_seen(self) -> list[ActiveSkill]:
-        """Every skill this session has activated, active or not (context persists)."""
+        """Every skill this session has activated, including inactive ones (their context persists)."""
         return list(self.skills)
 
     def classes_read_so_far(self) -> set[str]:
