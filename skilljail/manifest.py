@@ -54,7 +54,7 @@ class ExecPerms:
 
 @dataclass
 class EnvPerms:
-    # 'pass' is a keyword; keep the YAML key as `pass`
+    # `pass` is a Python keyword, so the field is named `pass_`; the YAML key stays `pass`
     pass_: list[str] = field(default_factory=list)
 
 
