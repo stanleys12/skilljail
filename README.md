@@ -125,7 +125,7 @@ skilljail/         manifest · policy · classes · proxy · backends · compose
 docs/              ARCHITECTURE · SPEC · THREAT_MODEL · EVAL · LIMITATIONS
 examples/skills/   benign skills with hand-written reference manifests
 eval/              harness · executor · canary sink · attack_suite/
-tests/             40 unit tests
+tests/             unit tests
 ```
 
 ## Status
