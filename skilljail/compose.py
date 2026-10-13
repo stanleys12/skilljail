@@ -106,7 +106,7 @@ def evaluate_activation(
         prior = session.all_seen()
         prior_reads = session.classes_read_so_far()
         prior_egress = session.egress_so_far()
-        # new skill adds network egress after earlier skills in the session read sensitive classes
+        # read-then-egress: earlier skills read sensitive classes, and this skill adds network egress
         if prior_reads and policy.net_allow:
             readers = [s.name for s in prior if s.classes_read]
             # hosts the new skill can reach that no *reading* skill could
@@ -119,7 +119,7 @@ def evaluate_activation(
                 F.append(Finding("R1", "exfil-chain", esc,
                     f"session already read sensitive class(es) {sorted(prior_reads)} via {readers}; this skill adds egress to {novel} — the agent's context could carry secrets to a new destination",
                     {"prior_classes": sorted(prior_reads), "novel_hosts": novel, "readers": readers}))
-        # new skill reads secrets while the session already has egress elsewhere
+        # egress-then-read: this skill reads secrets, and earlier skills already have egress elsewhere
         if declared_reads and prior_egress:
             novel = _hosts_not_covered(sorted(prior_egress), set(policy.net_allow))
             if novel:
