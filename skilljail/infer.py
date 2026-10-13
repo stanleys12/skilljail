@@ -485,7 +485,7 @@ class _Collector:
                     self.ev("net", a.split("/")[0].lower(), file, ln, source, raw)
         if base in ("nc", "ncat", "netcat", "socat", "telnet", "ssh", "scp", "sftp", "rsync"):
             self.flag("raw-network-tool", "high", f"uses {base} (raw socket / ssh transport — not proxyable, usually exfil or reverse shell)", f"{file}:{ln}")
-        # paths
+        # path arguments → fs-read / fs-write evidence
         write_next = False
         skip_first_positional = base in PATTERN_FIRST_ARG
         for i, a in enumerate(args):
