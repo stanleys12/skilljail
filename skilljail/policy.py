@@ -407,7 +407,7 @@ def build_policy(
     for w in fs_write:
         for e in exec_rules:
             overlap = (
-                (w.kind == "subpath" and (e.path == w.path or e.path.startswith(w.path + "/")))
+                _rule_matches(w, e.path)
                 or (e.kind == "subpath" and (w.path == e.path or w.path.startswith(e.path + "/")))
             )
             if overlap and e.original != "shell":
@@ -415,7 +415,7 @@ def build_policy(
     # writes into any PATH directory
     for w in fs_write:
         for d in (path_env or os.environ.get("PATH", "")).split(":"):
-            if d and w.kind == "subpath" and (canonical(d) == w.path or canonical(d).startswith(w.path + "/")):
+            if d and (canonical(d) == w.path or _rule_matches(w, canonical(d))):
                 risks.append(Risk("write-into-path", "high", f"fs.write {w.original!r} covers PATH directory {d}", {"write": w.original, "dir": d}))
                 break
 

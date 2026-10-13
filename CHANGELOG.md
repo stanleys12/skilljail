@@ -12,6 +12,7 @@
 - The plugin launcher ran the first `python3` on `PATH` even when it was older than 3.11 (stock macOS ships 3.9), so every hook crashed with an import traceback. It now picks the first `python3`, `python3.14` ... `python3.11` that is 3.11 or newer, and says so clearly when there is none.
 - The plugin launcher also picked a `python3` without pyyaml (a fresh Homebrew Python has none), so every hook crashed with `ModuleNotFoundError: No module named 'yaml'`. It now skips interpreters that cannot import yaml and names pyyaml in the error when none qualifies.
 - `skilljail uninstall`, a repeat `skilljail install` and `skilljail doctor` did not recognise hooks whose command was a quoted path (a checkout or venv under a directory with a space) or the `python -m skilljail.cli` fallback, so uninstall left them in place, reinstall duplicated them and doctor said they were not installed.
+- `fs.write` glob rules such as `bin/*` or `$WORKSPACE/**` were skipped by the `write-exec-overlap` and `write-into-path` checks, so a manifest that let a skill rewrite its own allowed executable or drop files into a `PATH` directory reported no high risk.
 
 ### Added
 - Test suite runs on GitHub Actions (macOS, Python 3.11 to 3.13).

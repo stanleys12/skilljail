@@ -82,6 +82,20 @@ def test_policy_write_exec_overlap(skill):
     assert any(r.code == "write-exec-overlap" for r in p.risks)
 
 
+def test_policy_glob_write_overlaps_exec_and_path(skill):
+    sk, ws, tmp, home = skill
+    (ws / "tools").mkdir()
+    (ws / "tools" / "tool").write_text("#!/bin/sh\n")
+    path_env = str(ws / "tools")
+    for write in ("$WORKSPACE/tools/*", "$WORKSPACE/**"):
+        m = parse_manifest_dict({"fs": {"write": [write]}, "exec": {"allow": [str(ws / "tools" / "tool")]}})
+        codes = {r.code for r in build_policy(m, sk, ws, tmp_dir=tmp, home=str(home), path_env=path_env).risks}
+        assert {"write-exec-overlap", "write-into-path"} <= codes, write
+    m = parse_manifest_dict({"fs": {"write": ["$WORKSPACE/docs/*.md"]}, "exec": {"allow": [str(ws / "tools" / "tool")]}})
+    codes = {r.code for r in build_policy(m, sk, ws, tmp_dir=tmp, home=str(home), path_env=path_env).risks}
+    assert not codes & {"write-exec-overlap", "write-into-path"}
+
+
 def test_policy_implicit_rules_and_vars(skill):
     sk, ws, tmp, home = skill
     m = parse_manifest_dict({"fs": {"read": ["$WORKSPACE/docs"], "write": ["out"]}})
