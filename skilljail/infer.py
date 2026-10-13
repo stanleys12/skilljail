@@ -643,11 +643,11 @@ def _collapse_paths(paths: list[str], limit: int = 10) -> list[str]:
     if len(set(ws)) > limit or "$WORKSPACE" in ws:
         ws = ["$WORKSPACE"]
     else:
-        # drop children when parent present
+        # drop paths already covered by a parent directory in the set
         ws_set = set(ws)
         ws = [p for p in ws_set if not any(o != p and p.startswith(o + "/") for o in ws_set)]
     out = sorted(set(other)) + sorted(set(ws))
-    # glob-ish literal file paths like $WORKSPACE/docs/*.md keep as is (policy handles globs)
+    # glob patterns like $WORKSPACE/docs/*.md are kept unchanged (policy handles globs)
     return out
 
 
