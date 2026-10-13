@@ -403,7 +403,7 @@ def build_policy(
             dedup.append(e)
     exec_rules = dedup
 
-    # write ∩ exec overlap → a skill could drop a binary and run it
+    # fs.write rules overlapping an exec path → a skill could drop a binary and run it
     for w in fs_write:
         for e in exec_rules:
             overlap = (
@@ -412,7 +412,7 @@ def build_policy(
             )
             if overlap and e.original != "shell":
                 risks.append(Risk("write-exec-overlap", "high", f"fs.write {w.original!r} overlaps exec path {e.path!r}: skill could modify what it executes", {"write": w.original, "exec": e.original}))
-    # writes into any PATH directory
+    # fs.write rules covering any PATH directory
     for w in fs_write:
         for d in (path_env or os.environ.get("PATH", "")).split(":"):
             if d and (canonical(d) == w.path or _rule_matches(w, canonical(d))):
