@@ -99,7 +99,7 @@ def cmd_run(a) -> int:
 
 
 def cmd_exec(a) -> int:
-    """Used by the Claude Code Bash hook rewrite."""
+    """Run a command under a skill's jail; the Claude Code Bash hook rewrites commands to call this."""
     skill_dir = Path(a.skill_dir).resolve()
     try:
         manifest = load_manifest(skill_dir)
