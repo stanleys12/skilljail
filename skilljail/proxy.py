@@ -42,6 +42,14 @@ _PRIVATE_NETS = [
 ]
 
 
+def _normalize_host(host: str) -> str:
+    host = host.lower().rstrip(".")
+    try:
+        return str(ipaddress.ip_address(host.strip("[]")))
+    except ValueError:
+        return host
+
+
 @dataclass(frozen=True)
 class NetRule:
     host: str  # "*", "example.com", "*.example.com", ip literal
@@ -53,14 +61,14 @@ class NetRule:
         return cls(host=host, port=port)
 
     def matches(self, host: str, port: int) -> bool:
-        host = host.lower().rstrip(".")
+        host = _normalize_host(host)
         if self.host == "*":
             host_ok = True
         elif self.host.startswith("*."):
             suffix = self.host[1:]  # ".example.com"
             host_ok = host.endswith(suffix) and host != suffix[1:]
         else:
-            host_ok = host == self.host
+            host_ok = host == _normalize_host(self.host)
         if not host_ok:
             return False
         if self.port is None:

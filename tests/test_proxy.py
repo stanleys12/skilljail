@@ -22,6 +22,16 @@ def test_rule_matching():
     assert NetRule.parse("10.0.0.5:53").matches("10.0.0.5", 53)
 
 
+def test_ipv6_literal_rule_matches_unbracketed_host():
+    rule = NetRule.parse("[2606:4700::1111]:443")
+    assert rule.matches("2606:4700::1111", 443)
+    assert rule.matches("2606:4700:0:0:0:0:0:1111", 443)
+    assert rule.matches("[2606:4700::1111]", 443)
+    assert not rule.matches("2606:4700::1112", 443)
+    assert not rule.matches("2606:4700::1111", 80)
+    assert NetRule.parse("[::1]").matches("0:0:0:0:0:0:0:1", 80)
+
+
 def test_private_ranges():
     for a in ["127.0.0.1", "10.1.2.3", "192.168.1.1", "172.16.5.5", "169.254.169.254", "100.64.0.1", "::1", "::", "fd00::1", "0.0.0.0"]:
         assert is_private_address(a), a
