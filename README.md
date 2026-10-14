@@ -78,7 +78,7 @@ cd examples/skills/csv-report && skilljail run --skill . -- 'python3 scripts/sum
 skilljail eval --attack-suite eval/attack_suite --experiments attack,e4
 ```
 
-Wire into Claude Code, either as a plugin (no pip install needed; requires python3 >= 3.11 with pyyaml):
+Wire into Claude Code as a plugin (no `pip install` needed, but it requires python3 >= 3.11 with pyyaml):
 
 ```
 /plugin marketplace add stanleys12/skilljail
