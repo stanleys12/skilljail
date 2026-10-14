@@ -6,8 +6,9 @@ Mapping from Policy:
   exec     → PATH directories are replaced by a tmpfs, and only allowed binaries are
              bind-mounted back in (coarser than Seatbelt's process-exec, but effective)
   net      → ``--unshare-net``. The proxy is *not* reachable inside a fresh net namespace
-             without a socket bridge (Anthropic's sandbox-runtime, srt, uses socat over a Unix socket); this backend
-             therefore supports **no network** only. ``net.allow`` non-empty → error.
+             without a socket bridge (Anthropic's sandbox-runtime, srt, uses socat over a
+             Unix socket); this backend therefore supports **no network** only.
+             A non-empty ``net.allow`` → error.
   env      → ``--clearenv`` then ``--setenv`` for the scrubbed set (supplied by the runner)
 
 Undeclared sensitive classes are hidden with an empty tmpfs mounted over each root.
