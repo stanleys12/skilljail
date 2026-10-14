@@ -10,8 +10,9 @@ Normalization is where most sandbox bugs live, so this module is deliberately ex
 * ``exec.allow`` names resolve through ``PATH`` to absolute binaries; interpreters that live
   in a versioned tree (Python.framework, venvs, Homebrew Cellar, nvm) are widened to that
   tree because they re-exec and dlopen inside it.
-* every rule is classified against the sensitive-class registry; undeclared class contact
-  is a policy *error* (fail closed), over-broad rules are *warnings*.
+* every rule is classified against the sensitive-class registry; contact with a
+  sensitive class the manifest has not declared is a policy *error* (fail closed), over-broad
+  rules are *warnings*.
 """
 
 from __future__ import annotations
