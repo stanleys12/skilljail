@@ -137,7 +137,7 @@ def evaluate_activation(
         else:
             F.append(Finding("R2", "persistence-write-approved", "allow", f"declared writes to {sorted(declared_writes)} accepted by approval"))
 
-    # ---- R3: write→exec
+    # ---- R3: write→exec (a writable path that is also executable lets a skill drop and run a binary)
     for r in policy.risks:
         if r.code in ("write-exec-overlap", "write-into-path"):
             F.append(Finding("R3", r.code, "deny", r.message, r.detail))
