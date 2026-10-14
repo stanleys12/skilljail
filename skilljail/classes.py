@@ -20,7 +20,7 @@ from dataclasses import dataclass
 from pathlib import PurePosixPath
 
 # ``**/name`` = any path having a component (or trailing path) equal to ``name``.
-# ``~/x``     = under the user's home. Absolute otherwise.
+# ``~/x``     = under the user's home. Any other pattern is an absolute path.
 CLASS_PATTERNS: dict[str, list[str]] = {
     "ssh": ["~/.ssh"],
     "cloud-creds": ["~/.aws", "~/.config/gcloud", "~/.azure", "~/.oci", "~/.boto", "~/.config/doctl", "~/.fly"],
