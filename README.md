@@ -113,7 +113,7 @@ egress/persistence IOC):
   reviewer acting on the flags. Static inference high-severity-flagged **65%**.
 
 **Benign utility** (50 top skills under their own inferred manifest): **52.5% run with zero
-denials, 82.5% within 3.** Residual friction is legitimately denied dangerous capabilities
+denials, 82.5% within 3.** Residual friction comes from legitimately denied dangerous capabilities
 (`osascript` app-scripting) and static-inference recall gaps — not the enforcement model; the
 hand-written reference manifests in `examples/` run friction-free. Full table and method in
 [docs/EVAL.md](docs/EVAL.md).
