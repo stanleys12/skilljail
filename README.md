@@ -41,7 +41,7 @@ Nobody had to detect the attack.
 | skillsandbox (OSS MVP) | ✅ | kernel (iptables/seccomp) | ❌ (standalone jail) | ❌ |
 | Claude Code `allowed-tools` | partial | grant-only, doesn't restrict | ✅ | ❌ |
 | AgentBound (2510.21236) | ✅ | for **MCP servers**, not skills | — | ❌ |
-| **SkillJail** | ✅ | **kernel** (Seatbelt/Landlock) + egress proxy | ✅ (PreToolUse `Skill`→`Stop`) | ✅ (R1 exfil-chain ledger) |
+| **SkillJail** | ✅ | **kernel** (Seatbelt/bwrap) + egress proxy | ✅ (PreToolUse `Skill`→`Stop`) | ✅ (R1 exfil-chain ledger) |
 
 The gap SkillJail fills is the seam every prior tool misses from one side or the other:
 **OS-level enforcement bound to skill activation, with cross-skill composition** — SkillGuard
