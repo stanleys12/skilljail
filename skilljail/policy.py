@@ -395,7 +395,7 @@ def build_policy(
             if os.path.exists(sh):
                 exec_rules.append(ExecRule(original="shell", path=canonical(sh), kind="literal", reason="exec.shell"))
         exec_rules.append(ExecRule(original="shell", path="/usr/bin/env", kind="literal", reason="shebang helper"))
-    # de-dup
+    # drop duplicate exec rules (same kind and path)
     seen_e: set[tuple[str, str]] = set()
     dedup: list[ExecRule] = []
     for e in exec_rules:
