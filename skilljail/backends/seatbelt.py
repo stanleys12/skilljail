@@ -161,7 +161,7 @@ class SeatbeltBackend(Backend):
         for cls in sorted(policy.undeclared_write_classes):
             for pat in C.CLASS_PATTERNS[cls]:
                 a(self._deny_class("file-write*", pat, policy.home, cls))
-        # …but the skill's own directory stays readable even if it lives under ~/.claude etc.
+        # …but the skill's own directory stays readable even if it lives under a denied path such as ~/.claude
         a(f"(allow file-read* (subpath {q(policy.skill_dir)}))  ; skill dir always readable")
         for p in SYSTEM_CARVEOUTS_READ:
             a(f"(deny file-read* (subpath {q(p)}))")
