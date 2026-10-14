@@ -72,7 +72,7 @@ class Manifest:
     exec: ExecPerms = field(default_factory=ExecPerms)
     env: EnvPerms = field(default_factory=EnvPerms)
     declare: list[Declaration] = field(default_factory=list)
-    # provenance
+    # provenance: where this manifest came from
     source: str = "default"  # "sidecar" | "frontmatter" | "default" | "inferred"
     source_path: Path | None = None
     skill_name: str | None = None
