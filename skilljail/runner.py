@@ -69,7 +69,7 @@ def build_env(policy: Policy, proxy_port: int | None, base: dict[str, str] | Non
     if proxy_port:
         env.update(proxy_env(proxy_port))
     else:
-        # belt and braces: point proxies at a closed port so proxy-aware tools fail fast
+        # no proxy running: point proxy variables at a closed port so proxy-aware tools fail fast
         env.update(proxy_env(1))
     if overrides:
         env.update(overrides)
