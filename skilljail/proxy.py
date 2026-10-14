@@ -10,8 +10,8 @@ Denied requests get ``403`` + ``X-SkillJail-Blocked: <reason>`` and an audit lin
 Modes:
   enforce — allowed hosts are dialed; everything else is 403.
   sink    — nothing is dialed. Every request is recorded and answered 200 (plain HTTP)
-            or the CONNECT is acknowledged and the client's first bytes are captured
-            then the socket closed. Used by the evaluation harness so malware can be
+            or the CONNECT is acknowledged, the client's first bytes are captured,
+            and the socket is closed. Used by the evaluation harness so malware can be
             *observed* attempting exfiltration without ever reaching the internet.
 
 SSRF guard: resolved addresses in loopback / link-local / RFC1918 / CGNAT / metadata /
