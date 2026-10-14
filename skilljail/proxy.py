@@ -119,7 +119,7 @@ class ProxyEvent:
     bytes_down: int = 0
     url: str | None = None
     resolved: list[str] = field(default_factory=list)
-    preview: str | None = None  # first bytes of a sunk request (redacted length-limited)
+    preview: str | None = None  # first bytes of a sunk request (redacted and length-limited)
 
     def to_json(self) -> str:
         return json.dumps(self.__dict__, ensure_ascii=False)
