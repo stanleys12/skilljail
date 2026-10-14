@@ -105,7 +105,8 @@ def _glob_component_hits(path: str, name_pattern: str) -> tuple[bool, bool]:
     ``name_pattern`` may be multi-component (``.git/hooks``).
     A path is "inside" if some suffix of its components starts with the pattern components.
     A path "covers" if it is a parent of a directory that *could* contain the pattern — we
-    treat that as true only for very broad roots (home or '/'), handled by the caller.
+    treat that as true only for very broad roots (home or '/'), handled by the caller, so
+    the second value returned here is always False.
     """
     comps = [c for c in PurePosixPath(_norm(path)).parts if c not in ("/", "")]
     pat = [c for c in PurePosixPath(name_pattern).parts if c not in ("/", "")]
