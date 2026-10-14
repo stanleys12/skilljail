@@ -143,8 +143,8 @@ class EgressProxy:
             raise ValueError("mode must be 'enforce' or 'sink'")
         self.policy = policy
         self.mode = mode
-        # dial=False (eval only): evaluate allow/deny exactly like enforce, but swallow 'allow'
-        # decisions instead of dialing upstream — so the harness never touches the real network.
+        # dial=False (eval only): evaluate allow/deny exactly like enforce, but on an 'allow'
+        # decision skip the upstream connection — so the harness never touches the real network.
         self.dial = dial
         self.on_event = on_event or (lambda e: None)
         self.bind_host = host
