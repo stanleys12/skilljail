@@ -19,7 +19,7 @@ import os
 from dataclasses import dataclass
 from pathlib import PurePosixPath
 
-# ``**/name`` = any path having a component (or trailing path) equal to ``name``.
+# ``**/name`` = any path containing ``name`` as a component (``name`` may itself be a multi-component suffix).
 # ``~/x``     = under the user's home. Any other pattern is an absolute path.
 CLASS_PATTERNS: dict[str, list[str]] = {
     "ssh": ["~/.ssh"],
