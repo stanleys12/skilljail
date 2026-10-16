@@ -56,6 +56,7 @@ def resolve_skill_dir(name: str, workspace: str | None = None, max_depth: int = 
 
 
 def list_skills(workspace: str | None = None, max_depth: int = 7) -> list[Path]:
+    """Return every skill directory (one containing SKILL.md) under the search roots, deduplicated and sorted."""
     found: dict[str, Path] = {}
     for root in _candidates(workspace):
         if not root.is_dir():
