@@ -236,7 +236,8 @@ def _wrap_bash(session_id, cwd, cur: sessmod.ActiveSkill, mode: str, command: st
 
 
 def _is_own_wrap(session_id, cwd, cur: sessmod.ActiveSkill, mode: str, command: str) -> bool:
-    # only an exact rewrite for this session, skill and mode may pass through; anything else could run outside the jail
+    # pass a command through only if it exactly matches the wrapper we would generate for this
+    # session, skill and mode; any other command could run outside the jail
     try:
         inner = shlex.split(command)[-1]
     except (ValueError, IndexError):
