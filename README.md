@@ -122,7 +122,7 @@ hand-written reference manifests in `examples/` run friction-free. Full table an
 
 ```
 skilljail/         manifest · policy · classes · proxy · backends · compose · lock · session · infer · skills · runner · audit · hooks · cli
-docs/              ARCHITECTURE · SPEC · THREAT_MODEL · EVAL · LIMITATIONS
+docs/              ARCHITECTURE · SPEC · MANIFEST · THREAT_MODEL · EVAL · LIMITATIONS
 examples/skills/   benign skills with hand-written reference manifests
 eval/              harness · executor · canary sink · attack_suite/
 tests/             unit tests
