@@ -68,6 +68,7 @@ def _hosts_not_covered(new_hosts: list[str], allowed: set[str]) -> list[str]:
         except Exception:
             out.append(h)
             continue
+        # swap a leading "*." for a placeholder label so the wildcard is tested as a concrete host
         host = nr.host if not nr.host.startswith("*.") else "x" + nr.host[1:]
         port = nr.port if nr.port not in (None, -1) else 443
         if not any(r.matches(host, port) for r in rules):
