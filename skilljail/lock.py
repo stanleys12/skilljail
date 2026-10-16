@@ -31,6 +31,10 @@ def _sha256_file(p: Path) -> str:
 
 
 def file_hashes(skill_dir: Path) -> dict[str, str]:
+    """Map each file's path (relative to ``skill_dir``) to its SHA-256.
+
+    Symlinks are hashed by target path, not followed; unreadable files get the marker ``"unreadable"``.
+    """
     out: dict[str, str] = {}
     skill_dir = Path(skill_dir)
     for root, dirs, files in os.walk(skill_dir):
