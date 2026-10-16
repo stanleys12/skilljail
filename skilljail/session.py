@@ -51,7 +51,7 @@ class Session:
 
     @property
     def current(self) -> ActiveSkill | None:
-        """Most recently activated skill (its profile governs Bash commands)."""
+        """Most recently activated skill that is still active (its profile governs Bash commands)."""
         act = self.active_skills
         return act[-1] if act else None
 
