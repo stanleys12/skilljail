@@ -86,7 +86,7 @@ def evaluate_activation(
     F: list[Finding] = []
     esc = "deny" if strict else "ask"
 
-    # ---- R0: policy errors → deny (undeclared class contact etc.)
+    # ---- R0: policy errors → deny (e.g. reading or writing a sensitive class without a `declare` entry)
     for r in policy.errors:
         F.append(Finding("R0", r.code, "deny", r.message, r.detail))
 
