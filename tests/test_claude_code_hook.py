@@ -114,3 +114,13 @@ def test_uninstall_and_reinstall_recognise_quoted_and_module_hook_commands(tmp_p
         assert claude_code.uninstall(settings)
         assert json.loads(settings.read_text())["hooks"] == {}
         assert not claude_code.is_installed(settings)
+
+
+def test_webfetch_outside_net_allow_is_logged_not_denied_in_observe_mode(tmp_path):
+    cur = _active(tmp_path)
+    enforce = claude_code._on_webfetch({"mode": "enforce"}, cur, {"url": "https://evil.example/x"})
+    assert enforce["hookSpecificOutput"]["permissionDecision"] == "deny"
+    observe = claude_code._on_webfetch({"mode": "observe"}, cur, {"url": "https://evil.example/x"})
+    out = observe["hookSpecificOutput"]
+    assert "permissionDecision" not in out
+    assert "would deny WebFetch to evil.example:443" in out["additionalContext"]

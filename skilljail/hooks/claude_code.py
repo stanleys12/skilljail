@@ -168,7 +168,7 @@ def handle(event: dict[str, Any]) -> dict[str, Any] | None:
         if tool in FS_TOOLS_READ or tool in FS_TOOLS_WRITE:
             return _on_fs_tool(cfg, session_id, cwd, cur, tool, tool_input)
         if tool == "WebFetch":
-            return _on_webfetch(cur, tool_input)
+            return _on_webfetch(cfg, cur, tool_input)
     return None
 
 
@@ -284,7 +284,7 @@ def _on_fs_tool(cfg, session_id, cwd, cur: sessmod.ActiveSkill, tool: str, tool_
     return _pre("deny", f"skilljail (skill '{cur.name}'): {why}. The skill's manifest does not permit this path.")
 
 
-def _on_webfetch(cur: sessmod.ActiveSkill, tool_input) -> dict[str, Any] | None:
+def _on_webfetch(cfg, cur: sessmod.ActiveSkill, tool_input) -> dict[str, Any] | None:
     url = tool_input.get("url")
     if not isinstance(url, str):
         return None
@@ -294,6 +294,8 @@ def _on_webfetch(cur: sessmod.ActiveSkill, tool_input) -> dict[str, Any] | None:
     pol = NetPolicy.from_rules(cur.net_allow)
     if pol.match(host, port):
         return None
+    if cfg.get("mode") == "observe":
+        return _pre(None, None, context=f"[skilljail observe] would deny WebFetch to {host}:{port}: not in net.allow {cur.net_allow or '[]'}")
     return _pre("deny", f"skilljail (skill '{cur.name}'): WebFetch to {host}:{port} is not in net.allow {cur.net_allow or '[]'}")
 
 

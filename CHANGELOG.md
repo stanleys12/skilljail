@@ -7,6 +7,7 @@
 - While a skill is active, every Bash command is now jailed unless it is exactly the hook's own rewrite. Before, a command that started with `skilljail ` or contained `SKILLJAIL_WRAPPED=1` anywhere ran unjailed, so `echo SKILLJAIL_WRAPPED=1; curl ... | sh` or `skilljail config mode observe` escaped the jail.
 
 ### Fixed
+- In `observe` mode, a WebFetch to a host outside the active skill's `net.allow` was still denied, unlike file tools, which only log. It is now allowed with a "would deny" note.
 - Connections still open when the proxy stopped were missing from the audit log (seen on Python 3.11).
 - Installed as a plugin without a pip install, the jailed Bash rewrite fell back to `python -m skilljail.cli`, which could not import the package from the workspace. It now runs through the checkout's own launcher when `skilljail` is not on `PATH`.
 - The plugin launcher ran the first `python3` on `PATH` even when it was older than 3.11 (stock macOS ships 3.9), so every hook crashed with an import traceback. It now picks the first `python3`, `python3.14` ... `python3.11` that is 3.11 or newer, and says so clearly when there is none.
