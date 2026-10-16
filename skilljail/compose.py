@@ -119,7 +119,7 @@ def evaluate_activation(
                 F.append(Finding("R1", "exfil-chain", esc,
                     f"session already read sensitive class(es) {sorted(prior_reads)} via {readers}; this skill adds egress to {novel} — the agent's context could carry secrets to a new destination",
                     {"prior_classes": sorted(prior_reads), "novel_hosts": novel, "readers": readers}))
-        # egress-then-read: this skill reads secrets, and earlier skills can already reach hosts outside this skill's own net allowlist
+        # egress-then-read: this skill reads secrets, and earlier skills can already reach hosts that this skill's own net allowlist does not cover
         if declared_reads and prior_egress:
             novel = _hosts_not_covered(sorted(prior_egress), set(policy.net_allow))
             if novel:
