@@ -18,6 +18,7 @@ from typing import Any
 
 SKILLJAIL_HOME = Path(os.environ.get("SKILLJAIL_HOME", os.path.expanduser("~/.skilljail")))
 LOCKS_DIR = SKILLJAIL_HOME / "locks"
+# Names excluded from hashing, matched against both directory and file names (.DS_Store is a file).
 _SKIP_DIRS = {".git", "__pycache__", "node_modules", ".venv", "venv", ".mypy_cache", ".pytest_cache", ".DS_Store"}
 
 
