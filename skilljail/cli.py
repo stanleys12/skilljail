@@ -498,7 +498,7 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: list[str] | None = None) -> int:
     p = build_parser()
     a = p.parse_args(argv)
-    # argparse REMAINDER keeps a leading '--'
+    # argparse REMAINDER keeps a leading '--'; strip it so only the real command remains
     if hasattr(a, "cmd") and isinstance(a.cmd, list) and a.cmd and a.cmd[0] == "--":
         a.cmd = a.cmd[1:]
     if hasattr(a, "eval_args") and a.eval_args and a.eval_args[0] == "--":
