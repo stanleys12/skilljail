@@ -110,7 +110,7 @@ egress/persistence IOC):
 - **35%** contained when the manifest is naively inferred *from the malware itself* — the honest
   negative result: inference legitimizes the malware's own hosts, so containment must come from a
   manifest reviewed against the skill's stated purpose, from composition rules, or from a
-  reviewer acting on the flags. Static inference high-severity-flagged **65%**.
+  reviewer acting on the flags. Static inference flagged **65%** as high severity.
 
 **Benign utility** (50 top skills under their own inferred manifest): **52.5% run with zero
 denials, 82.5% within 3.** Residual friction comes from legitimately denied dangerous capabilities
