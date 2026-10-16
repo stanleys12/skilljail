@@ -109,7 +109,7 @@ def evaluate_activation(
         # read-then-egress: earlier skills read sensitive classes, and this skill adds network egress
         if prior_reads and policy.net_allow:
             readers = [s.name for s in prior if s.classes_read]
-            # hosts the new skill can reach that no *reading* skill could
+            # hosts this skill can reach that none of the earlier *reading* skills could
             reader_hosts: set[str] = set()
             for s in prior:
                 if s.classes_read:
