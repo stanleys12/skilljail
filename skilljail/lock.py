@@ -1,7 +1,8 @@
 """Rug-pull protection: bind an approved manifest to the exact skill content it was approved for.
 
-``approve`` records a SHA-256 of every file in the skill directory (plus a combined tree hash) and of the manifest.
-Activation recomputes and refuses on mismatch, naming the files that changed. A skill that
+``approve`` records a SHA-256 of every file in the skill directory (plus a combined tree hash)
+and of the manifest. Activation recomputes and refuses on mismatch, naming the files that
+changed. A skill that
 was benign at install and turns malicious on update (the ClawHavoc pattern) is stopped
 before a single command runs.
 """
