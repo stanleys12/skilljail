@@ -166,7 +166,7 @@ def _rule_matches(r: PathRule, p: str) -> bool:
 
 
 def canonical(path: str) -> str:
-    """realpath with a stable fallback for non-existent tails."""
+    """Absolute, ~-expanded, symlink-resolved path without a trailing slash (works for paths that don't exist yet)."""
     p = os.path.abspath(os.path.expanduser(path))
     real = os.path.realpath(p)
     return real.rstrip("/") or "/"
