@@ -54,6 +54,7 @@ def file_hashes(skill_dir: Path) -> dict[str, str]:
 
 
 def tree_hash(hashes: dict[str, str]) -> str:
+    """Combine per-file hashes into one SHA-256, independent of dict insertion order."""
     h = hashlib.sha256()
     for rel in sorted(hashes):
         h.update(rel.encode("utf-8") + b"\0" + hashes[rel].encode() + b"\0")
