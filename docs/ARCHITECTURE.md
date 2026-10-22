@@ -183,7 +183,7 @@ Skill resolution order: `.claude/skills/<name>`, `~/.claude/skills/**/<name>`, p
 
 ## 9. Manifest inference (`infer.py`)
 
-Static, deterministic, explainable. No LLM in the loop by default (an LLM inferer is the thing an attacker would target).
+Static, deterministic, explainable. No LLM in the loop by default (an LLM-based inferer would be a prompt-injection target for an attacker).
 
 Sources: fenced `bash`/`sh`/`zsh`/`console` blocks in SKILL.md (and referenced `.md` files), every file under `scripts/`, shebangs. Extractors:
 
