@@ -28,7 +28,7 @@ class ActiveSkill:
     activated_at: float
     net_allow: list[str] = field(default_factory=list)
     classes_read: list[str] = field(default_factory=list)  # declared read-sensitive classes
-    classes_write: list[str] = field(default_factory=list)
+    classes_write: list[str] = field(default_factory=list)  # declared write-sensitive classes
     exec_allow: list[str] = field(default_factory=list)
     manifest_source: str = "default"
     active: bool = True
