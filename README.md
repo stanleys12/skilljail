@@ -61,7 +61,7 @@ Two planes (full detail in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)):
   SkillJail checks them against the same manifest via PreToolUse hooks. (Policy, not
   containment — stated honestly.)
 
-Binding to Claude Code is via hooks: `PreToolUse:Skill` loads the manifest, runs the rug-pull
+SkillJail binds to Claude Code through hooks: `PreToolUse:Skill` loads the manifest, runs the rug-pull
 lock check and composition rules, and decides allow/ask/deny; `PreToolUse:Bash` rewrites the
 command to run in the jail; `Stop` deactivates. One command, `skilljail install`, wires it up.
 
