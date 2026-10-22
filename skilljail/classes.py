@@ -103,8 +103,8 @@ def _glob_component_hits(path: str, name_pattern: str) -> tuple[bool, bool]:
     """For ``**/name`` patterns. Returns (rule_inside_or_exact, rule_covers).
 
     ``name_pattern`` may be multi-component (``.git/hooks``).
-    A path is "inside" if the pattern components appear as a contiguous run in its components.
-    A path "covers" the pattern if it is a parent of a directory that *could* contain it. Only
+    The rule path is "inside" if the pattern components appear as a contiguous run in its components.
+    It "covers" the pattern if it is a parent of a directory that *could* contain it. Only
     very broad roots (home or '/') count, and the caller handles those, so the second value
     is always False here.
     """
