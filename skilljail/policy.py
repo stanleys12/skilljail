@@ -284,7 +284,7 @@ def resolve_exec(name: str, path_env: str | None = None) -> list[ExecRule]:
             return []
         real = canonical(found)
         # keep the PATH entry too (e.g. a Homebrew symlink into its Cellar); Seatbelt checks the *resolved* path,
-        # but the symlink must be readable to be resolved.
+        # but the symlink itself must be readable so that it can be resolved.
         if canonical(found) != found:
             rules.append(ExecRule(original=name, path=found, kind="literal", reason="path symlink"))
     rules.append(ExecRule(original=name, path=real, kind="literal", reason="resolved"))
