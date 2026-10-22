@@ -206,7 +206,7 @@ def cmd_approve(a) -> int:
         _print_policy(policy)
         return _err("policy has errors; fix the manifest (or --force to approve anyway)")
     if manifest.source == "default" and not a.force:
-        return _err("skill has no manifest (default policy executes nothing). Run `skilljail infer --write` first, or --force to approve the default")
+        return _err("skill has no manifest (default policy executes nothing). Run `skilljail infer --write` first, or pass --force to approve the default policy")
     _print_policy(policy)
     if not a.yes:
         try:
