@@ -88,7 +88,7 @@ Wire into Claude Code as a plugin (no `pip install` needed; requires python3 >= 
 or with the CLI:
 
 ```bash
-skilljail install                      # adds hooks to ~/.claude/settings.json (backs it up)
+skilljail install                      # adds hooks to ~/.claude/settings.json (backs up the original first)
 skilljail config mode enforce          # or: observe (log-only) / off
 # then in Claude Code: activating any skill jails its Bash commands for that turn
 ```
