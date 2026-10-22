@@ -106,7 +106,7 @@ persistence, B6 reverse shell), each run for real inside a canary jail:
 egress/persistence IOC):
 
 - **100% (49/49) contained** when the payload runs under a least-privilege manifest written for
-  the skill's *declared* purpose (the benign twin's) — the thesis.
+  the skill's *declared* purpose (the benign twin's) — this is the thesis.
 - **35%** contained when the manifest is naively inferred *from the malware itself* — the honest
   negative result: inference legitimizes the malware's own hosts, so containment must come from a
   manifest reviewed against the skill's stated purpose, from composition rules, or from a
