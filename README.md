@@ -131,7 +131,7 @@ tests/             unit tests
 ## Status
 
 Research prototype, macOS-first (Seatbelt tested; Linux/bwrap partial). Not a VM; not a
-scanner replacement; does not stop permission-reuse within declared scope. See
+scanner replacement; does not stop a skill from misusing permissions it legitimately declared. See
 [docs/LIMITATIONS.md](docs/LIMITATIONS.md). Apache-2.0.
 
 ## Contributing
