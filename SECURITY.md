@@ -10,7 +10,7 @@ This is a pre-1.0 research prototype. Only the latest release and `main` get fix
 
 Please report bypasses privately through GitHub: **Security → Report a vulnerability** on this repository. Don't open a public issue for them.
 
-Useful details: the manifest, the command or skill that escaped, macOS version, and what it reached (a file path, a host, a process).
+Useful details: the manifest, the command or skill that escaped, OS and version (macOS or Linux), and what it reached (a file path, a host, a process).
 
 ## In scope
 
