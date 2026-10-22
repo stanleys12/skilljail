@@ -54,7 +54,7 @@ Two planes (full detail in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)):
 
 - **Kernel plane — containment (the contribution).** Every `Bash` command an active skill runs
   is transparently wrapped so it executes under a Seatbelt profile (bwrap on Linux) compiled from the manifest:
-  fs deny-by-default, exec allowlist, network restricted to a single loopback egress proxy that
+  filesystem deny-by-default, exec allowlist, network restricted to a single loopback egress proxy that
   enforces the host allowlist and blocks SSRF/metadata. Subprocesses, interpreters and scripts
   inherit the jail. The agent can be fully manipulated and it doesn't matter.
 - **Harness plane — policy.** `Read`/`Write`/`Edit`/`WebFetch` run inside the agent process;
