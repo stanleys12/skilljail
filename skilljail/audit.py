@@ -130,7 +130,11 @@ class DenialCollector:
         return datetime.fromtimestamp(ts).strftime("%Y-%m-%d %H:%M:%S")
 
     def stop(self, settle: float | None = None, window_start: float | None = None, window_end: float | None = None) -> list[Denial]:
-        """Return denials whose event time falls inside [window_start, window_end]."""
+        """Return denials whose event time falls inside [window_start, window_end].
+
+        The window defaults to ``start()`` through now. ``settle`` is how long to wait for the
+        kernel to flush trailing denials before querying (default: ``SKILLJAIL_LOG_SETTLE`` or 0.6s).
+        """
         if not self.available:
             return []
         if settle is None:
