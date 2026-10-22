@@ -355,7 +355,7 @@ def build_policy(
     if unknown:
         raise PolicyError(f"declare: unknown class(es) {sorted(unknown)}; known: {sorted(C.ALL_CLASSES)}")
 
-    # ---- class contact
+    # ---- sensitive-class access (must be declared)
     for r in fs_read:
         for cls in r.classes:
             if cls in C.READ_SENSITIVE and cls not in declared:
