@@ -171,8 +171,7 @@ Installed into `~/.claude/settings.json` by `skilljail install`:
 | `SessionStart` | — | init session ledger |
 | `PreToolUse` | `Skill` | resolve skill dir → load manifest → lock check (R5) → compose check (R1–R4) → `allow/ask/deny`; on allow, mark skill **active** for this session and emit `additionalContext` describing the jail to the model |
 | `PreToolUse` | `Bash` | if any skill is active: rewrite `tool_input.command` via `updatedInput` to `skilljail exec --session <id> -- <command>` (kernel plane) |
-| `PreToolUse` | `Read\|Write\|Edit\|Glob\|Grep\|NotebookEdit` | if active: check `file_path` against fs policy → `deny` with reason (harness plane) |
-| `PreToolUse` | `WebFetch\|WebSearch` | if active: check host against net policy (harness plane) |
+| `PreToolUse` | `Read\|Write\|Edit\|MultiEdit\|Glob\|Grep\|NotebookEdit\|WebFetch` | if active: check `file_path` against fs policy, or the `WebFetch` host against net policy → `deny` with reason (harness plane). `WebSearch` is not checked |
 | `Stop`, `SubagentStop`, `SessionEnd` | — | deactivate skills, flush ledger, write session audit summary |
 
 "Active" = from the Skill tool call until end of turn. Claude Code has no skill-deactivation event, so end-of-turn is the conservative choice (the skill's instructions are in context for the rest of the turn anyway). Multiple active skills → the Bash rewrite uses the **intersection-safe composite**: each command runs under the *most recently activated* skill's profile, and R1 governs cross-skill flows.
