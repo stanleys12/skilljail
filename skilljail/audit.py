@@ -122,7 +122,7 @@ class DenialCollector:
     def start(self) -> None:
         self._start_ts = time.time()
 
-    def _pump(self) -> None:  # kept for API compatibility; does nothing because denials are queried in stop()
+    def _pump(self) -> None:  # no-op, kept for API compatibility: denials are queried once, in stop()
         pass
 
     @staticmethod
