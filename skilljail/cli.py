@@ -496,13 +496,15 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def main(argv: list[str] | None = None) -> int:
-    p = build_parser()
-    a = p.parse_args(argv)
+    argv = sys.argv[1:] if argv is None else argv
+    # argparse REMAINDER rejects a leading option such as --attack-suite, so eval options bypass it
+    if argv[:1] == ["eval"]:
+        a = argparse.Namespace(fn=cmd_eval, eval_args=argv[2:] if argv[1:2] == ["--"] else argv[1:])
+    else:
+        a = build_parser().parse_args(argv)
     # argparse REMAINDER keeps a leading '--'; strip it so only the real command remains
     if hasattr(a, "cmd") and isinstance(a.cmd, list) and a.cmd and a.cmd[0] == "--":
         a.cmd = a.cmd[1:]
-    if hasattr(a, "eval_args") and a.eval_args and a.eval_args[0] == "--":
-        a.eval_args = a.eval_args[1:]
     try:
         return a.fn(a)
     except KeyboardInterrupt:
