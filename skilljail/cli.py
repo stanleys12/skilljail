@@ -111,7 +111,7 @@ def cmd_exec(a) -> int:
     command = cmd[0] if len(cmd) == 1 else " ".join(shlex.quote(c) for c in cmd)
     mode = a.mode
     if mode == "observe":
-        # observe mode: only the kernel jail can log denials, so skip the jail, run the command unjailed and print a notice
+        # observe mode enforces nothing: run the command unjailed and print a notice saying so
         import subprocess
 
         print(f"[skilljail observe] running UNJAILED (observe mode): {command[:100]}", file=sys.stderr)
