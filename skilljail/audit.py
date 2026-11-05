@@ -5,7 +5,7 @@ modern macOS), but the kernel logs every denial to the unified log as::
 
     kernel: (Sandbox) Sandbox: cat(24209) deny(1) file-read-data /Users/me/.aws/credentials
 
-``DenialCollector`` runs ``/usr/bin/log stream`` for the duration of a jailed run and parses
+``DenialCollector`` queries ``/usr/bin/log show`` for the time window of a jailed run and parses
 those lines. It is *telemetry*, not enforcement: enforcement already happened in the kernel.
 The value is that a blocked attempt becomes a named, classed audit event ("tried to read
 cloud-creds") rather than a silent EPERM.
