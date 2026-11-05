@@ -37,6 +37,7 @@ DANGEROUS_EXEC = {
     "sandbox-exec", "bwrap", "docker", "nsenter", "chroot", "systemctl", "kextload", "csrutil", "spctl", "xattr",
     "dd", "diskutil", "hdiutil", "tmutil", "pkill", "killall", "reboot", "shutdown",
 }
+# Binaries that can open network connections, so allowing them in exec.allow implies possible egress.
 NETWORK_CAPABLE_EXEC = {"curl", "wget", "python", "python3", "node", "ruby", "perl", "php", "git", "pip", "pip3", "npm", "npx", "pnpm", "yarn", "uv", "gh", "aws", "gcloud", "az"}
 SHELLS = ["/bin/sh", "/bin/bash", "/bin/zsh", "/bin/dash", "/bin/ksh"]
 _NO_WIDEN_PARENTS = {"/", "/usr", "/usr/local", "/opt", "/opt/homebrew", "/bin", "/sbin", "/System", "/Library"}
