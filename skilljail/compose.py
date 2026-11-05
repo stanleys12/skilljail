@@ -23,7 +23,7 @@ SEVERITY_ORDER = {"deny": 0, "ask": 1, "allow": 2}
 
 @dataclass
 class Finding:
-    rule: str  # R1..R6
+    rule: str  # R0..R6
     code: str
     action: str  # allow | ask | deny
     message: str
