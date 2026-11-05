@@ -112,6 +112,7 @@ def _lock_path(name: str, locks_dir: Path | None = None) -> Path:
 
 
 def manifest_hash(manifest_dict: dict[str, Any]) -> str:
+    """SHA-256 of the manifest's canonical JSON (sorted keys), so key order doesn't matter."""
     return hashlib.sha256(json.dumps(manifest_dict, sort_keys=True).encode()).hexdigest()
 
 
