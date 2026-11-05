@@ -689,7 +689,7 @@ def infer(skill_dir: str | os.PathLike, *, minimal: bool = False, include_prose:
     if minimal or not include_prose:
         ev = [e for e in ev if e.source in ("code", "frontmatter")]
 
-    # any local script → the interpreters it needs are already recorded; scripts need $SKILL read (implicit)
+    # the `__local_script__` marker is not a real binary, so drop it here; the interpreter it implies is added below
     exec_names = sorted({e.value for e in ev if e.kind == "exec" and e.value != "__local_script__" and e.value not in SHELL_BUILTINS})
     shell = any(e.kind == "shell" for e in ev) or any(e.source in ("code", "inline") and e.kind == "exec" for e in ev)
     # interpreters implied by script files present
