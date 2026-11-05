@@ -252,7 +252,7 @@ def _make_path_rule(raw: str, variables: dict[str, str], home: str) -> PathRule:
 
 
 def _widen_interpreter(real: str) -> tuple[str, str] | None:
-    """If ``real`` sits in a versioned tree (…/bin/x), return (subpath, reason)."""
+    """If ``real`` sits in a versioned tree (…/bin/x), return (tree root to allow as a subpath, reason); else None."""
     parent = os.path.dirname(real)
     if os.path.basename(parent) != "bin":
         return None
