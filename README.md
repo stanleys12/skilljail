@@ -29,7 +29,7 @@ permissions:
   env:  { pass: ["VERCEL_TOKEN"] }
 ```
 
-Now `cat ~/.aws/credentials` → `Operation not permitted`; `curl evil.example` → connection
+With that manifest in place, `cat ~/.aws/credentials` → `Operation not permitted`; `curl evil.example` → connection
 refused; `python -c 'socket…'` → cannot open a socket to anything but the audited egress proxy.
 Nobody had to detect the attack.
 
