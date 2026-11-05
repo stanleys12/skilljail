@@ -21,7 +21,7 @@ the skill's activation. A scanner miss is no longer a breach: the exfil host isn
 the credential file isn't readable, however convincing the instructions were.
 
 ```yaml
-# skilljail.yaml  — the whole security model for a deploy skill
+# skilljail.yaml — the whole security model for a deploy skill
 permissions:
   fs:   { read: ["$WORKSPACE"], write: ["$WORKSPACE/.vercel"] }
   net:  { allow: ["api.vercel.com", "registry.npmjs.org"] }
